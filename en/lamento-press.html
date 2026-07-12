@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAMENTO — Press Release · Jakob Grimm</title>
+<meta name="description" content="Press text, audio samples and tracklist for LAMENTO, the debut album by Jakob Grimm.">
+<meta name="robots" content="noindex, nofollow">
+<style>
+  @font-face{font-family:'DM Sans';font-style:normal;font-weight:300 500;font-display:swap;
+    src:url('../fonts/dm-sans-normal-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+  @font-face{font-family:'DM Sans';font-style:normal;font-weight:300 500;font-display:swap;
+    src:url('../fonts/dm-sans-normal-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+  @font-face{font-family:'DM Sans';font-style:italic;font-weight:300;font-display:swap;
+    src:url('../fonts/dm-sans-italic-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+  @font-face{font-family:'DM Sans';font-style:italic;font-weight:300;font-display:swap;
+    src:url('../fonts/dm-sans-italic-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+  :root{
+    --paper:#f5f2ed; --ink:#111; --line:#d8d4cc; --muted:#999; --faint:#bbb;
+    --hover:#ede9e3; --tile:#e2ddd6; --dark:#111;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;}
+  img{display:block;max-width:100%;}
+  a{color:inherit;}
+
+  .nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+    padding:0 2rem;height:54px;background:rgba(245,242,237,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .logo{font-size:13px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;text-decoration:none;}
+  .nav-lang{display:flex;align-items:center;gap:.4em;font-size:11px;letter-spacing:0.09em;text-transform:uppercase;}
+  .nav-lang .sep{color:var(--faint);}
+  .nav-lang a{color:var(--muted);text-decoration:none;transition:color .15s;}
+  .nav-lang a:hover{color:var(--ink);}
+  .nav-lang .current{color:#555;font-weight:600;}
+
+  .press-header{padding:3.5rem 2rem 3rem;text-align:center;}
+  .press-header h1{font-size:40px;font-weight:300;letter-spacing:.05em;margin-bottom:.7rem;}
+  .press-header .press-meta{font-size:11.5px;color:var(--faint);letter-spacing:.04em;}
+
+  .press-text-wrap{padding:0 2rem 4.5rem;}
+  .press-grid{display:grid;grid-template-columns:2fr 3fr;gap:2.75rem;}
+  .press-cover{position:sticky;top:78px;align-self:start;}
+  .press-cover img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border:1px solid var(--line);}
+  .press-text p{font-size:14.5px;color:#333;line-height:1.85;margin-bottom:1.2rem;text-align:justify;-webkit-hyphens:auto;hyphens:auto;}
+  .press-text p:last-child{margin-bottom:0;}
+
+  .cover-credits{margin-top:1.1rem;font-size:10.5px;color:var(--muted);line-height:1.6;}
+  .cover-credits div{margin-bottom:.7rem;}
+  .cover-credits div:last-child{margin-bottom:0;}
+  .cover-credits strong{display:block;font-weight:500;color:#333;letter-spacing:.04em;margin-bottom:.15em;}
+  .cover-credits span{display:block;}
+  .cover-credits-label{margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--line);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+
+  .press-download{display:block;margin-top:1.5rem;padding:.85rem 1.2rem;background:var(--ink);color:var(--paper);text-align:center;font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:opacity .15s;}
+  .press-download:hover{opacity:.85;}
+
+  .album-player{padding:0 2.5rem 2.25rem;}
+  .album-player iframe{display:block;width:100%;}
+
+  .performers{padding:.5rem 2.5rem 3.5rem;max-width:920px;margin:0 auto;}
+  .performers-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+  .performer h3{font-size:15px;font-weight:500;letter-spacing:.02em;margin-bottom:.15em;}
+  .performer .role{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.9rem;}
+  .performer p{font-size:13.5px;color:#333;line-height:1.75;}
+  .performer p:not(.role){text-align:justify;-webkit-hyphens:auto;hyphens:auto;}
+
+  .press-privacy{padding:1rem 2rem;border-bottom:1px solid var(--line);font-size:10.5px;color:var(--faint);line-height:1.7;}
+
+  .footer{display:grid;grid-template-columns:1fr 1fr;}
+  .footer-l{padding:1.4rem 2rem;border-right:1px solid var(--line);font-size:11px;color:var(--muted);}
+  .footer-r{padding:1.4rem 2rem;display:flex;gap:1.75rem;justify-content:flex-end;flex-wrap:wrap;}
+  .footer-r a{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#888;text-decoration:none;transition:color .15s;}
+  .footer-r a:hover{color:var(--ink);}
+
+  @media(max-width:760px){
+    .nav{padding:0 1.25rem;}
+    .press-header{padding:2.5rem 1.25rem 2rem;}
+    .press-header h1{font-size:32px;}
+    .press-text-wrap{padding:0 1.25rem 3rem;}
+    .press-grid{grid-template-columns:1fr;gap:1.5rem;}
+    .press-cover{position:static;max-width:280px;margin:0 auto;}
+    .album-player{padding:0 1.25rem 1.75rem;}
+    .performers{padding:.5rem 1.25rem 2.5rem;}
+    .performers-grid{grid-template-columns:1fr;gap:2rem;}
+    .footer{grid-template-columns:1fr;}
+    .footer-l{border-right:none;border-bottom:1px solid var(--line);}
+    .footer-r{justify-content:flex-start;}
+  }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="logo" href="index.html">Jakob Grimm</a>
+  <div class="nav-lang"><a href="../lamento-presse.html">DE</a><span class="sep">|</span><span class="current">EN</span></div>
+</nav>
+
+<div class="press-header">
+  <h1>LAMENTO</h1>
+  <p class="press-meta">Release: 25 Sept 2026 · simoc records</p>
+</div>
+
+<div class="press-text-wrap">
+  <div class="press-grid">
+    <div class="press-cover">
+      <img src="../Bilder/startseite-cover-lamento.jpg" alt="Lamento album cover">
+      <div class="cover-credits">
+        <div><strong>Recording</strong><span>David Merkl (except tracks 1, 9), Sebastian Kienel (tracks 1, 9)</span></div>
+        <div><strong>Mixing &amp; Mastering</strong><span>David Merkl | msm-studios</span></div>
+        <div><strong>Artwork</strong><span>Rodrigo Stix Luna</span></div>
+        <div><strong>Producers</strong><span>Christian Traute, Jakob Grimm</span></div>
+        <div class="cover-credits-label">simoc records</div>
+      </div>
+      <a class="press-download" href="https://www.dropbox.com/scl/fo/qizrmgcezo6fiskfmeexi/AJLC1_x7-isFUNTzaMhN5k0?rlkey=0j7wy1jxwz4xbjem88dpkugsf&st=vubdaegq&dl=0" target="_blank" rel="noopener">Download press kit</a>
+    </div>
+    <div class="press-text">
+    <p>With LAMENTO, Jakob Grimm presents his debut album — a programme that carries its title like a question, not an answer. The trombone has known lament for centuries: it has accompanied the dead, heralded apocalypses, cried out through the alleys of New Orleans, and lent Renaissance sacred music a sound that can only be described as the breath of transience. We know what that sounds like. What this inheritance can become, taken seriously without being repeated, is what this album sets out to ask.</p>
+    <p>LAMENTO grew out of a close collaboration between Manuel Zwerger and Jakob Grimm. Together, the two musicians explored the trombone's sonic possibilities, listened into its physics, and experimented. In the title track, Zwerger uses the glissando — the trombone's most familiar gesture — as a kind of sounding deception. The result sounds like an electronic effect — glitching, phase-shifted, surreal — yet remains entirely acoustic: slide and lip work against each other as the trombone climbs the harmonic series, that ancient acoustic ladder dormant in every brass tone. A lament that doesn't mourn the way you'd expect — but like someone spelling the language of lament anew.</p>
+    <p>Plain-Chant et Allegretto — the title alone reveals a tension. Alfred Désenclos called his own music "romantic" — and yet the piece carries that suspended modality descended from Gregorian chant, which has run through French music for centuries. Except here it lands on an instrument that knows no words. As though humming a melody whose words one has forgotten. At the piano is Irén Seleljo, with whom Grimm has shared a close musical partnership for years.</p>
+    <p>Six pieces (Hat darab harsonára és zongorára) that all also exist within György Kurtág's piano cycle Játékok — that intensely personal cosmos of miniatures and dedications which Kurtág has kept writing, diary-like, since 1973. Transposed to the trombone, something dormant in the piano writing comes to light: the fanfares that frame the original cycle are an inherently brass-player's gesture — on the trombone, they take on a naturalness that surprises. In between: lament, violence, lament. And then, as an unexpected postscript, the Hommage à Paganini — a puzzlingly gleeful lurch into virtuosity that lands like a wicked smile.</p>
+    <p>Amlóði's millstone once ground peace and abundance, then salt, then rock and sand — and so gave rise to the maelstrom, the whirlpool down to the underworld. Biagio Putignano places this image from Il Mulino di Amleto as a motto before his Hamlet's Mill. Putignano wrote the piece for Jakob Grimm and decided to have the trombone played without its tuning slide. A small decision with large consequences: the tone becomes more compact, rawer — more archaic. As if the instrument had remembered something older, something rougher. That it is precisely this sound that sets the maelstrom in motion is no accidental choice.</p>
+    <p>The album closes with René Leibowitz's Quatre Bagatelles, op. 61 — miniatures by a composer who wrote his music the way he lived his life: in a spirit of permanent contradiction. A pupil of Ravel, an apostle of Schoenberg, a teacher of Boulez — and never quite understood by his contemporaries, because he refused to be pinned down. Lamentation against Ostinato, Marche Funèbre against Chant sans Paroles — opposites that don't cancel each other out but interrogate one another. And beneath their austere surface: a sound that is warmer and more sensuous than one would expect.</p>
+    <p>LAMENTO is neither a manifesto nor a treatise. It is an attempt to hear the trombone for what it is, at its best: an instrument that can speak without having to explain.</p>
+    </div>
+  </div>
+</div>
+
+<div class="album-player">
+  <iframe src="https://samply.app/embed/v95Va1uGYQB9nvqbRGh2?si=TRivUrQxwjNI9WUqhHJ13DhyJj93" frameborder="0" allowtransparency="true" style="width:100%; min-height:650px; border-radius:0; border:1px solid #d8d4cc;"></iframe>
+</div>
+
+<div class="performers">
+  <div class="performers-grid">
+    <div class="performer">
+      <h3>Jakob Grimm</h3>
+      <p class="role">Trombone</p>
+      <p>Jakob Grimm is a bass trombonist focused on contemporary music and chamber music. Composers such as Manuel Zwerger, Biagio Putignano and Mike Svoboda have written for him; his work has been featured by broadcasters from ORF to BBC Radio 3. Concerts have taken him to Wigmore Hall London, the Philharmonie Berlin and the Solti Hall Budapest. He trained in Munich, Vienna, Amsterdam and Basel. He is a member of the brass quartet Tetra Brass and teaches trombone and chamber music at the Berufsfachschule für Musik in Dinkelsbühl.</p>
+    </div>
+    <div class="performer">
+      <h3>Irén Seleljo</h3>
+      <p class="role">Piano</p>
+      <p>Irén Seleljo studied at the Franz Liszt Academy of Music in Budapest and at the Konservatorium Wien Privatuniversität. A scholarship took her to Bard College in the United States, where she studied with Jeremy Denk. Her artistic focus lies in chamber music, with a particular interest in contemporary repertoire. She has performed in Austria, Hungary, France, Romania, Spain, Italy and Chile, among others. She teaches as a university professor at the Musik und Kunst Privatuniversität der Stadt Wien (MUK) and at the Kunstuniversität Graz.</p>
+    </div>
+  </div>
+</div>
+
+<div class="press-privacy">The embedded audio player is provided by Samply (samply.app). Playing the tracks transmits data to the provider.</div>
+
+<div class="footer">
+  <div class="footer-l">© 2026 Jakob Grimm</div>
+  <div class="footer-r">
+    <a href="mailto:info@jakob-grimm.de">E-Mail</a>
+    <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+    <a href="imprint.html">Imprint</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</div>
+</body>
+</html>

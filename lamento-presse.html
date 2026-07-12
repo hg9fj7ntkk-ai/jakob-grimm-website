@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAMENTO — Pressetext · Jakob Grimm</title>
+<meta name="description" content="Pressetext, Hörproben und Tracklist zu LAMENTO, dem Debütalbum von Jakob Grimm.">
+<meta name="robots" content="noindex, nofollow">
+<style>
+  @font-face{font-family:'DM Sans';font-style:normal;font-weight:300 500;font-display:swap;
+    src:url('fonts/dm-sans-normal-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+  @font-face{font-family:'DM Sans';font-style:normal;font-weight:300 500;font-display:swap;
+    src:url('fonts/dm-sans-normal-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+  @font-face{font-family:'DM Sans';font-style:italic;font-weight:300;font-display:swap;
+    src:url('fonts/dm-sans-italic-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+  @font-face{font-family:'DM Sans';font-style:italic;font-weight:300;font-display:swap;
+    src:url('fonts/dm-sans-italic-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+  :root{
+    --paper:#f5f2ed; --ink:#111; --line:#d8d4cc; --muted:#999; --faint:#bbb;
+    --hover:#ede9e3; --tile:#e2ddd6; --dark:#111;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;}
+  img{display:block;max-width:100%;}
+  a{color:inherit;}
+
+  .nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+    padding:0 2rem;height:54px;background:rgba(245,242,237,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .logo{font-size:13px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;text-decoration:none;}
+  .nav-lang{display:flex;align-items:center;gap:.4em;font-size:11px;letter-spacing:0.09em;text-transform:uppercase;}
+  .nav-lang .sep{color:var(--faint);}
+  .nav-lang a{color:var(--muted);text-decoration:none;transition:color .15s;}
+  .nav-lang a:hover{color:var(--ink);}
+  .nav-lang .current{color:#555;font-weight:600;}
+
+  .press-header{padding:3.5rem 2rem 3rem;text-align:center;}
+  .press-header h1{font-size:40px;font-weight:300;letter-spacing:.05em;margin-bottom:.7rem;}
+  .press-header .press-meta{font-size:11.5px;color:var(--faint);letter-spacing:.04em;}
+
+  .press-text-wrap{padding:0 2rem 4.5rem;}
+  .press-grid{display:grid;grid-template-columns:2fr 3fr;gap:2.75rem;}
+  .press-cover{position:sticky;top:78px;align-self:start;}
+  .press-cover img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border:1px solid var(--line);}
+  .press-text p{font-size:14.5px;color:#333;line-height:1.85;margin-bottom:1.2rem;text-align:justify;-webkit-hyphens:auto;hyphens:auto;}
+  .press-text p:last-child{margin-bottom:0;}
+
+  .cover-credits{margin-top:1.1rem;font-size:10.5px;color:var(--muted);line-height:1.6;}
+  .cover-credits div{margin-bottom:.7rem;}
+  .cover-credits div:last-child{margin-bottom:0;}
+  .cover-credits strong{display:block;font-weight:500;color:#333;letter-spacing:.04em;margin-bottom:.15em;}
+  .cover-credits span{display:block;}
+  .cover-credits-label{margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--line);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+
+  .press-download{display:block;margin-top:1.5rem;padding:.85rem 1.2rem;background:var(--ink);color:var(--paper);text-align:center;font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:opacity .15s;}
+  .press-download:hover{opacity:.85;}
+
+  .album-player{padding:0 2.5rem 2.25rem;}
+  .album-player iframe{display:block;width:100%;}
+
+  .performers{padding:.5rem 2.5rem 3.5rem;max-width:920px;margin:0 auto;}
+  .performers-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+  .performer h3{font-size:15px;font-weight:500;letter-spacing:.02em;margin-bottom:.15em;}
+  .performer .role{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.9rem;}
+  .performer p{font-size:13.5px;color:#333;line-height:1.75;}
+  .performer p:not(.role){text-align:justify;-webkit-hyphens:auto;hyphens:auto;}
+
+  .press-privacy{padding:1rem 2rem;border-bottom:1px solid var(--line);font-size:10.5px;color:var(--faint);line-height:1.7;}
+
+  .footer{display:grid;grid-template-columns:1fr 1fr;}
+  .footer-l{padding:1.4rem 2rem;border-right:1px solid var(--line);font-size:11px;color:var(--muted);}
+  .footer-r{padding:1.4rem 2rem;display:flex;gap:1.75rem;justify-content:flex-end;flex-wrap:wrap;}
+  .footer-r a{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#888;text-decoration:none;transition:color .15s;}
+  .footer-r a:hover{color:var(--ink);}
+
+  @media(max-width:760px){
+    .nav{padding:0 1.25rem;}
+    .press-header{padding:2.5rem 1.25rem 2rem;}
+    .press-header h1{font-size:32px;}
+    .press-text-wrap{padding:0 1.25rem 3rem;}
+    .press-grid{grid-template-columns:1fr;gap:1.5rem;}
+    .press-cover{position:static;max-width:280px;margin:0 auto;}
+    .album-player{padding:0 1.25rem 1.75rem;}
+    .performers{padding:.5rem 1.25rem 2.5rem;}
+    .performers-grid{grid-template-columns:1fr;gap:2rem;}
+    .footer{grid-template-columns:1fr;}
+    .footer-l{border-right:none;border-bottom:1px solid var(--line);}
+    .footer-r{justify-content:flex-start;}
+  }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="logo" href="index.html">Jakob Grimm</a>
+  <div class="nav-lang"><span class="current">DE</span><span class="sep">|</span><a href="en/lamento-press.html">EN</a></div>
+</nav>
+
+<div class="press-header">
+  <h1>LAMENTO</h1>
+  <p class="press-meta">Release: 25.09.2026 · simoc records</p>
+</div>
+
+<div class="press-text-wrap">
+  <div class="press-grid">
+    <div class="press-cover">
+      <img src="Bilder/startseite-cover-lamento.jpg" alt="Album-Cover Lamento">
+      <div class="cover-credits">
+        <div><strong>Recording</strong><span>David Merkl (außer Track 1, 9), Sebastian Kienel (Track 1, 9)</span></div>
+        <div><strong>Mixing &amp; Mastering</strong><span>David Merkl | msm-studios</span></div>
+        <div><strong>Artwork</strong><span>Rodrigo Stix Luna</span></div>
+        <div><strong>Producers</strong><span>Christian Traute, Jakob Grimm</span></div>
+        <div class="cover-credits-label">simoc records</div>
+      </div>
+      <a class="press-download" href="https://www.dropbox.com/scl/fo/qizrmgcezo6fiskfmeexi/AJLC1_x7-isFUNTzaMhN5k0?rlkey=0j7wy1jxwz4xbjem88dpkugsf&st=vubdaegq&dl=0" target="_blank" rel="noopener">Pressematerial herunterladen</a>
+    </div>
+    <div class="press-text">
+    <p>Mit LAMENTO legt Jakob Grimm sein Debütalbum vor — ein Programm, das seinen Titel wie eine Frage trägt, nicht wie eine Antwort. Denn die Posaune kennt die Klage seit Jahrhunderten: Sie hat Tote begleitet, Apokalypsen angekündigt, in den Gassen von New Orleans geschrien und der Kirchenmusik der Renaissance mit einem Klang versehen, den man nur als den Atem der Vergänglichkeit beschreiben kann. Man weiß, wie das klingt. Was aus diesem Erbe werden kann, wenn man es ernst nimmt, ohne es zu wiederholen, wird auf diesem Album befragt.</p>
+    <p>LAMENTO entstand in enger Zusammenarbeit zwischen Manuel Zwerger und Jakob Grimm. Die Musiker erkundeten gemeinsam die Klangmöglichkeiten der Posaune, horchten in ihre Physik hinein, probierten aus. Zwerger setzt dabei das Glissando — die vertrauteste Geste der Posaune — im Titelstück als klingende Täuschung ein. Was dabei entstand, klingt wie ein elektronischer Effekt — glitchend, phasenverschoben, surreal — und bleibt doch rein akustisch: Zug und Lippe arbeiten gegeneinander, die Posaune klettert entlang der Naturtonreihe, jener uralten akustischen Leiter, die in jedem Blechton schlummert. Ein Lamento, das nicht klagt wie erwartet — sondern wie jemand, der die Sprache der Klage neu buchstabiert.</p>
+    <p>Plain-Chant et Allegretto — schon der Titel verrät eine Spannung. Alfred Désenclos nannte seine Musik selbst „romantisch" — und doch klingt das Stück nach jener schwebenden Modalität, die dem Gregorianischen Choral entstammt und französische Musik seit Jahrhunderten durchzieht. Nur dass er hier auf einem Instrument landet, das keine Worte kennt. Als würde man eine Melodie summen, deren Worte man vergessen hat. Am Klavier ist Irén Seleljo zu hören, mit der Grimm seit Jahren eine enge musikalische Partnerschaft verbindet.</p>
+    <p>Sechs Stücke (Hat darab harsonára és zongorára), die allesamt auch in György Kurtágs Klavierzyklus Játékok existieren — jenem persönlichen Kosmos aus Miniaturen und Widmungen, den Kurtág seit 1973 wie ein Tagebuch weitergeschrieben hat. Die Übertragung auf die Posaune legt etwas frei, was bislang im Klaviersatz schlummerte: Die Fanfaren, die im Original den Zyklus einrahmen, sind eine ureigene Geste des Blechbläsers — auf der Posaune bekommen sie nun eine Selbstverständlichkeit, die überrascht. Dazwischen: Klage, Gewalt, Klage. Und dann, als unerwarteter Nachsatz, die Hommage à Paganini — ein rätselhaft freudiger Überschlag ins Virtuose, der wie ein böses Lächeln anmutet.</p>
+    <p>Der Mühlstein des Amlòði mahlte einst Frieden und Überfluss, dann Salz, dann Felsen und Sand — und erzeugt so den Maelstrom, den Strudel zur Unterwelt. Dieses Bild aus Il Mulino di Amleto stellt Biagio Putignano seinem Hamlet's Mill als Motto voran. Putignano schrieb das Stück für Jakob Grimm und entschied, die Posaune ohne Stimmzug spielen zu lassen. Eine kleine, folgenreiche Entscheidung: Der Ton wird kompakter, rauer — archaischer. Als hätte das Instrument sich an etwas Älteres, Roheres erinnert. Dass ausgerechnet dieser Klang den Maelstrom in Bewegung setzt, ist keine zufällige Besetzungsentscheidung.</p>
+    <p>Den Abschluss bilden René Leibowitz' Quatre Bagatelles op. 61 — Miniaturen eines Komponisten, der seine Musik so schrieb, wie er sein Leben lebte: im Geist des permanenten Widerspruchs. Schüler Ravels, Apostel Schönbergs, Lehrer Boulez' — und von seinen Zeitgenossen nie recht verstanden, weil er sich nicht einordnen ließ. Lamentation gegen Ostinato, Marche Funèbre gegen Chants sans Paroles — Gegensätze, die einander nicht aufheben, sondern befragen. Und unter ihrer strengen Oberfläche: ein Klang, der wärmer und sinnlicher ist, als man erwartet.</p>
+    <p>LAMENTO ist kein Manifest und kein Lehrgang. Es ist der Versuch, die Posaune als das zu hören, was sie im besten Fall ist: Ein Instrument, das sprechen kann, ohne erklären zu müssen.</p>
+    </div>
+  </div>
+</div>
+
+<div class="album-player">
+  <iframe src="https://samply.app/embed/v95Va1uGYQB9nvqbRGh2?si=TRivUrQxwjNI9WUqhHJ13DhyJj93" frameborder="0" allowtransparency="true" style="width:100%; min-height:650px; border-radius:0; border:1px solid #d8d4cc;"></iframe>
+</div>
+
+<div class="performers">
+  <div class="performers-grid">
+    <div class="performer">
+      <h3>Jakob Grimm</h3>
+      <p class="role">Posaune</p>
+      <p>Jakob Grimm ist Bassposaunist mit Fokus auf zeitgenössische Musik und Kammermusik. Komponisten wie Manuel Zwerger, Biagio Putignano und Mike Svoboda schrieben für ihn; seine Arbeit wurde von ORF bis BBC Radio 3 porträtiert. Konzerte führten ihn in die Wigmore Hall London, die Philharmonie Berlin und die Solti Hall Budapest. Seine Ausbildung absolvierte er in München, Wien, Amsterdam und Basel. Er ist Mitglied des Blechbläserquartetts Tetra Brass und unterrichtet Posaune und Kammermusik an der Berufsfachschule für Musik in Dinkelsbühl.</p>
+    </div>
+    <div class="performer">
+      <h3>Irén Seleljo</h3>
+      <p class="role">Klavier</p>
+      <p>Irén Seleljo studierte an der Franz-Liszt-Musikakademie Budapest sowie an der Konservatorium Wien Privatuniversität. Ein Stipendium führte sie ans Bard College in die USA, wo sie bei Jeremy Denk studierte. Ihr künstlerischer Schwerpunkt liegt in der Kammermusik, mit besonderem Interesse an der Musik der Gegenwart. Sie konzertierte u. a. in Österreich, Ungarn, Frankreich, Rumänien, Spanien, Italien und Chile. Sie unterrichtet als Universitätsprofessorin an der Musik und Kunst Privatuniversität der Stadt Wien und an der Kunstuniversität Graz.</p>
+    </div>
+  </div>
+</div>
+
+<div class="press-privacy">Der eingebettete Audio-Player wird von Samply (samply.app) bereitgestellt. Beim Abspielen werden Daten an den Anbieter übertragen.</div>
+
+<div class="footer">
+  <div class="footer-l">© 2026 Jakob Grimm</div>
+  <div class="footer-r">
+    <a href="mailto:info@jakob-grimm.de">E-Mail</a>
+    <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+  </div>
+</div>
+</body>
+</html>
