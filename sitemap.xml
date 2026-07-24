@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://jakob-grimm.de/index.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/index.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/index.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/index.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/ueber-mich.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/ueber-mich.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/about.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/ueber-mich.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/tetra-brass.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/tetra-brass.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/tetra-brass.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/tetra-brass.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/solo.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/solo.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/solo.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/solo.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/paedagogik.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/paedagogik.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/pedagogy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/paedagogik.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/kontakt.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/kontakt.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/kontakt.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/impressum.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/impressum.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/imprint.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/impressum.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/datenschutz.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/datenschutz.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/datenschutz.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/en/index.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/index.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/index.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/index.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/en/about.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/ueber-mich.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/about.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/ueber-mich.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/en/tetra-brass.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/tetra-brass.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/tetra-brass.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/tetra-brass.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/en/solo.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/solo.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/solo.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/solo.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/en/pedagogy.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/paedagogik.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/pedagogy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/paedagogik.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/en/contact.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/kontakt.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/kontakt.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/en/imprint.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/impressum.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/imprint.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/impressum.html"/>
+  </url>
+  <url>
+    <loc>https://jakob-grimm.de/en/privacy.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://jakob-grimm.de/datenschutz.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jakob-grimm.de/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jakob-grimm.de/datenschutz.html"/>
+  </url>
+</urlset>
