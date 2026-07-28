@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cent-Hörtraining · Feine Intonationsunterschiede</title>
+<style>
+  :root{
+    --ink:#101820;
+    --ink-soft:#4b5763;
+    --paper:#eef1f0;
+    --surface:#ffffff;
+    --line:#d2dad8;
+    --signal:#0e6f79;
+    --signal-weak:#dbeaec;
+    --right:#2b6b46;
+    --wrong:#a33a2b;
+    --radius:10px;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;padding:24px 16px 40px;
+    background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.5;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:900px;margin:0 auto}
+  header{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:24px}
+  h1{
+    font-family:var(--serif);font-weight:600;font-size:clamp(1.5rem,4vw,2.1rem);
+    margin:0 0 6px;letter-spacing:-.01em;
+  }
+  .lede{margin:0;color:var(--ink-soft);max-width:56ch}
+  .eyebrow{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--signal);margin:0 0 8px;
+  }
+  .layout{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:24px;align-items:start}
+  @media(max-width:720px){.layout{grid-template-columns:1fr}}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .panel h2{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);margin:0 0 14px;font-weight:600;
+  }
+  .field{margin-bottom:16px}
+  .field:last-child{margin-bottom:0}
+  label,.legend{display:block;font-size:.85rem;font-weight:600;margin-bottom:6px}
+  select,input[type=range]{width:100%}
+  select{
+    font:inherit;padding:7px 8px;border:1px solid var(--line);border-radius:6px;
+    background:var(--surface);color:var(--ink);
+  }
+  .seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .seg button{
+    flex:1;font:inherit;font-size:.85rem;padding:8px 6px;border:0;background:var(--surface);
+    color:var(--ink-soft);cursor:pointer;
+  }
+  .seg button+button{border-left:1px solid var(--line)}
+  .seg button[aria-pressed=true]{background:var(--signal);color:#fff;font-weight:600}
+  .seg button:disabled{opacity:.4;cursor:not-allowed}
+  .readout{font-family:var(--mono);font-size:.9rem;color:var(--signal);font-weight:600}
+  .hint{font-size:.78rem;color:var(--ink-soft);margin:6px 0 0}
+  .check{display:flex;gap:8px;align-items:flex-start;font-size:.85rem;font-weight:400}
+  .check input{margin-top:3px}
+
+  .task{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .prompt{font-family:var(--serif);font-size:1.35rem;margin:0 0 4px}
+  .prompt-sub{margin:0 0 18px;color:var(--ink-soft);font-size:.9rem}
+  .btn{
+    font:inherit;font-weight:600;padding:11px 18px;border-radius:8px;border:1px solid var(--ink);
+    background:var(--ink);color:#fff;cursor:pointer;
+  }
+  .btn.ghost{background:var(--surface);color:var(--ink)}
+  .btn.wide{width:100%}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn:hover:not(:disabled){filter:brightness(1.12)}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .answers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+  @media(max-width:420px){.answers{grid-template-columns:1fr}}
+  .answers .btn{border-color:var(--signal);background:var(--signal-weak);color:var(--ink)}
+
+  .verdict{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+  .verdict[hidden]{display:none}
+  .verdict-head{font-family:var(--serif);font-size:1.1rem;margin:0 0 10px}
+  .verdict.ok .verdict-head{color:var(--right)}
+  .verdict.no .verdict-head{color:var(--wrong)}
+  dl.facts{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0 0 14px;font-size:.88rem}
+  dl.facts dt{color:var(--ink-soft)}
+  dl.facts dd{margin:0;font-family:var(--mono)}
+  canvas{width:100%;height:110px;display:block;border:1px solid var(--line);border-radius:6px;background:#fbfcfc}
+  .caption{font-size:.76rem;color:var(--ink-soft);margin:6px 0 0}
+
+  .free{margin-top:24px}
+  .stats{
+    display:flex;gap:22px;margin-top:20px;padding-top:14px;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:.82rem;color:var(--ink-soft);flex-wrap:wrap;align-items:center;
+  }
+  .stats b{color:var(--ink)}
+  .stats button{font:inherit;background:none;border:0;color:var(--signal);cursor:pointer;padding:0;text-decoration:underline}
+  footer{margin-top:26px;font-size:.78rem;color:var(--ink-soft)}
+  kbd{font-family:var(--mono);font-size:.75rem;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:1px 5px;background:var(--surface)}
+  :focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+  body.embed{padding:0 0 10px;background:transparent}
+  body.embed header{display:none}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="eyebrow">Gehörbildung · Intonation</p>
+  <h1>Wie klein ist klein? Cent-Hörtraining</h1>
+  <p class="lede">Zwei Sinustöne, dazwischen ein Abstand von 2 bis 15 Cent. Stellen Sie die Größe des Abstands ein und trainieren Sie, ihn zu hören.</p>
+</header>
+
+<div class="layout">
+
+  <!-- ---------- Steuerung ---------- -->
+  <section class="panel" aria-label="Einstellungen">
+    <h2>Einstellungen</h2>
+
+    <div class="field">
+      <label for="cents">Abweichung <span class="readout" id="centsOut">genau 6 Cent</span></label>
+      <input type="range" id="cents" min="2" max="15" step="1" value="6">
+      <p class="hint">Der zweite Ton liegt genau um diesen Wert höher oder tiefer. 2 Cent ist die Grenze des Hörbaren, 15 Cent hört man deutlich.</p>
+    </div>
+
+    <div class="field">
+      <label class="check" for="rnd">
+        <input type="checkbox" id="rnd">
+        <span id="rndLabel">Stattdessen zufällig zwischen 2 und 6 Cent</span>
+      </label>
+    </div>
+
+    <div class="field">
+      <label for="base">Grundton</label>
+      <select id="base">
+        <option value="146.83">d – 146,83 Hz</option>
+        <option value="220">a – 220,00 Hz</option>
+        <option value="293.66">d¹ – 293,66 Hz</option>
+        <option value="440" selected>a¹ – 440,00 Hz</option>
+        <option value="587.33">d² – 587,33 Hz</option>
+        <option value="880">a² – 880,00 Hz</option>
+        <option value="rand">zufällig</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <span class="legend" id="lblTask">Aufgabe</span>
+      <div class="seg" role="group" aria-labelledby="lblTask">
+        <button type="button" data-task="dir" aria-pressed="true">höher / tiefer</button>
+        <button type="button" data-task="pure" aria-pressed="false">rein / verstimmt</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="legend" id="lblMode">Darbietung</span>
+      <div class="seg" role="group" aria-labelledby="lblMode">
+        <button type="button" data-mode="seq" aria-pressed="true">nacheinander</button>
+        <button type="button" data-mode="sim" aria-pressed="false" id="btnSim">gleichzeitig</button>
+      </div>
+      <p class="hint" id="modeHint">Bei „höher / tiefer“ müssen die Töne nacheinander erklingen.</p>
+    </div>
+
+    <div class="field">
+      <label for="dur">Tondauer <span class="readout" id="durOut">1,2 s</span></label>
+      <input type="range" id="dur" min="0.4" max="3" step="0.1" value="1.2">
+    </div>
+
+    <div class="field">
+      <label for="vol">Lautstärke</label>
+      <input type="range" id="vol" min="0" max="100" step="1" value="50">
+    </div>
+  </section>
+
+  <!-- ---------- Aufgabe ---------- -->
+  <div>
+  <section class="task" aria-live="polite">
+    <p class="prompt" id="prompt">Ist der zweite Ton höher oder tiefer?</p>
+    <p class="prompt-sub" id="promptSub">Zum Starten anhören.</p>
+
+    <div class="row">
+      <button class="btn" id="play">Anhören</button>
+      <button class="btn ghost" id="next" disabled>Nächste Aufgabe</button>
+    </div>
+
+    <div class="answers" id="answers">
+      <button class="btn" data-answer="up">Zweiter ist höher</button>
+      <button class="btn" data-answer="down">Zweiter ist tiefer</button>
+    </div>
+
+    <div class="verdict" id="verdict" hidden>
+      <p class="verdict-head" id="verdictHead"></p>
+      <dl class="facts">
+        <dt>Ton 1</dt><dd id="f1"></dd>
+        <dt>Ton 2</dt><dd id="f2"></dd>
+        <dt>Abstand</dt><dd id="dCent"></dd>
+        <dt>Schwebung</dt><dd id="beat"></dd>
+      </dl>
+      <canvas id="scope" width="820" height="220" aria-label="Schwebungsbild der beiden Töne"></canvas>
+      <p class="caption" id="scopeCap"></p>
+    </div>
+
+    <div class="stats">
+      <span>Richtig <b id="sRight">0</b> von <b id="sTotal">0</b></span>
+      <span>Serie <b id="sStreak">0</b></span>
+      <button type="button" id="reset">zurücksetzen</button>
+    </div>
+  </section>
+
+  <!-- ---------- Freies Hören ---------- -->
+  <section class="panel free" aria-label="Freies Hören">
+    <h2>Frei hören</h2>
+    <div class="row">
+      <button class="btn ghost" data-free="ref">Grundton</button>
+      <button class="btn ghost" data-free="off">Grundton + Abstand</button>
+      <button class="btn ghost" data-free="both">beide zusammen</button>
+      <button class="btn ghost" data-free="stop">Stopp</button>
+    </div>
+    <p class="hint">Klingt so lange, bis Sie stoppen oder eine Aufgabe starten. Zusammen erklingend wird der Abstand als Schwebung hörbar.</p>
+  </section>
+
+  <footer>
+    <p><kbd>Leertaste</kbd> anhören · <kbd>1</kbd> / <kbd>2</kbd> antworten · <kbd>Enter</kbd> nächste Aufgabe</p>
+  </footer>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ----- Einbettungsmodus: ?embed blendet Kopfzeile und Außenabstand aus ----- */
+  if(/[?&]embed/.test(location.search)) document.body.classList.add("embed");
+
+  /* ----- Audio ----- */
+  var ctx=null, live=[];           // live = laufende Oszillator-Knoten
+  function audio(){
+    if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)();
+    if(ctx.state==="suspended") ctx.resume();
+    return ctx;
+  }
+  function gainValue(){ return (+volEl.value/100)*0.30; }
+
+  function tone(freq,start,dur){          // Sinuston mit weicher Hüllkurve
+    var a=audio(), o=a.createOscillator(), g=a.createGain();
+    var t=a.currentTime+start, atk=0.015, rel=0.06, peak=gainValue();
+    o.type="sine"; o.frequency.setValueAtTime(freq,t);
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(peak,t+atk);
+    g.gain.setValueAtTime(peak,t+dur-rel);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination);
+    o.start(t); o.stop(t+dur+0.02);
+    live.push(o);
+  }
+  function sustain(freq){
+    var a=audio(), o=a.createOscillator(), g=a.createGain(), t=a.currentTime;
+    o.type="sine"; o.frequency.setValueAtTime(freq,t);
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(gainValue(),t+0.03);
+    o.connect(g); g.connect(a.destination); o.start(t);
+    o._g=g; live.push(o);
+  }
+  function stopAll(){
+    if(!ctx) { live=[]; return; }
+    var t=ctx.currentTime;
+    live.forEach(function(o){
+      try{
+        if(o._g){ o._g.gain.cancelScheduledValues(t);
+                  o._g.gain.setValueAtTime(Math.max(o._g.gain.value,0.0001),t);
+                  o._g.gain.exponentialRampToValueAtTime(0.0001,t+0.05); }
+        o.stop(t+0.07);
+      }catch(e){}
+    });
+    live=[];
+  }
+
+  /* ----- Elemente ----- */
+  var centsEl=document.getElementById("cents"), centsOut=document.getElementById("centsOut"),
+      rndEl=document.getElementById("rnd"), baseEl=document.getElementById("base"),
+      durEl=document.getElementById("dur"), durOut=document.getElementById("durOut"),
+      volEl=document.getElementById("vol"),
+      playBtn=document.getElementById("play"), nextBtn=document.getElementById("next"),
+      answersEl=document.getElementById("answers"), promptEl=document.getElementById("prompt"),
+      subEl=document.getElementById("promptSub"), verdict=document.getElementById("verdict"),
+      vHead=document.getElementById("verdictHead"), btnSim=document.getElementById("btnSim"),
+      modeHint=document.getElementById("modeHint");
+
+  var task="dir", mode="seq";
+  var q=null, stats={right:0,total:0,streak:0};
+
+  var PITCHES=[146.83,220,293.66,440,587.33,880];
+  function cent2f(f,c){ return f*Math.pow(2,c/1200); }
+  function num(x,d){ return x.toFixed(d).replace(".",","); }
+
+  /* ----- Aufgabe erzeugen ----- */
+  function newQuestion(){
+    var base = baseEl.value==="rand" ? PITCHES[Math.floor(Math.random()*PITCHES.length)] : parseFloat(baseEl.value);
+    var max=+centsEl.value;
+    var c = rndEl.checked ? 2+Math.floor(Math.random()*(max-1)) : max;
+    var detuned = task==="dir" ? true : Math.random()<0.5;
+    var sign = Math.random()<0.5 ? -1 : 1;
+    q={ base:base, cents:detuned?c:0, sign:sign, detuned:detuned,
+        f1:base, f2:cent2f(base, detuned?sign*c:0), answered:false };
+    verdict.hidden=true;
+    nextBtn.disabled=true;
+    setAnswersEnabled(true);
+    subEl.textContent = mode==="sim" ? "Beide Töne erklingen gleichzeitig." : "Zwei Töne nacheinander.";
+    play();
+  }
+
+  function play(){
+    stopAll();
+    if(!q) return;
+    var d=+durEl.value;
+    if(mode==="sim"){ tone(q.f1,0.05,d); tone(q.f2,0.05,d); }
+    else { tone(q.f1,0.05,d); tone(q.f2,0.05+d+0.25,d); }
+  }
+
+  function setAnswersEnabled(on){
+    Array.prototype.forEach.call(answersEl.querySelectorAll("button"),function(b){ b.disabled=!on; });
+  }
+
+  /* Einstellung geändert: laufende Aufgabe verwerfen, damit der nächste
+     Klick auf „Anhören" garantiert mit den aktuellen Werten rechnet. */
+  function invalidate(msg){
+    stopAll(); q=null;
+    verdict.hidden=true; nextBtn.disabled=true; setAnswersEnabled(false);
+    subEl.textContent = msg || "Einstellung geändert – „Anhören“ startet eine neue Aufgabe.";
+  }
+
+  /* ----- Antwort ----- */
+  function answer(val){
+    if(!q||q.answered) return;
+    q.answered=true; setAnswersEnabled(false); nextBtn.disabled=false;
+    var correct = task==="dir" ? (q.sign>0?"up":"down") : (q.detuned?"off":"pure");
+    var ok = val===correct;
+    stats.total++; if(ok){stats.right++;stats.streak++;} else {stats.streak=0;}
+    document.getElementById("sRight").textContent=stats.right;
+    document.getElementById("sTotal").textContent=stats.total;
+    document.getElementById("sStreak").textContent=stats.streak;
+
+    verdict.className="verdict "+(ok?"ok":"no");
+    vHead.textContent = ok ? "Richtig." : "Nicht getroffen.";
+    var beatHz=Math.abs(q.f2-q.f1);
+    document.getElementById("f1").textContent=num(q.f1,2)+" Hz";
+    document.getElementById("f2").textContent=num(q.f2,2)+" Hz";
+    document.getElementById("dCent").textContent = q.detuned
+      ? (q.sign>0?"+":"−")+q.cents+" Cent" : "0 Cent (rein)";
+    document.getElementById("beat").textContent = beatHz>0.0001
+      ? num(beatHz,2)+" Hz  ·  alle "+num(1/beatHz,2)+" s eine Auslöschung"
+      : "keine";
+    drawScope(beatHz);
+    verdict.hidden=false;
+  }
+
+  /* ----- Schwebungsbild ----- */
+  function drawScope(beatHz){
+    var cv=document.getElementById("scope"), g=cv.getContext("2d");
+    var W=cv.width,H=cv.height,mid=H/2, span=3; // 3 Sekunden
+    g.clearRect(0,0,W,H);
+    g.strokeStyle="#d2dad8"; g.beginPath(); g.moveTo(0,mid); g.lineTo(W,mid); g.stroke();
+    g.strokeStyle="#0e6f79"; g.lineWidth=1.4; g.beginPath();
+    for(var x=0;x<W;x++){
+      var t=x/W*span;
+      var env=Math.abs(Math.cos(Math.PI*beatHz*t));      // echte Schwebungshüllkurve
+      var carrier=Math.sin(2*Math.PI*14*t);              // schematischer Träger
+      var y=mid-env*carrier*(mid-10);
+      if(x===0) g.moveTo(x,y); else g.lineTo(x,y);
+    }
+    g.stroke();
+    document.getElementById("scopeCap").textContent = beatHz>0.0001
+      ? "3 Sekunden Klangverlauf. Die Hüllkurve zeigt die tatsächliche Schwebung, die Wellendichte ist schematisch."
+      : "3 Sekunden Klangverlauf. Ohne Abstand bleibt die Lautstärke konstant – keine Schwebung.";
+  }
+
+  /* ----- Modus / Aufgabe umschalten ----- */
+  function renderAnswers(){
+    if(task==="dir"){
+      promptEl.textContent="Ist der zweite Ton höher oder tiefer?";
+      answersEl.innerHTML='<button class="btn" data-answer="up">Zweiter ist höher</button>'+
+                          '<button class="btn" data-answer="down">Zweiter ist tiefer</button>';
+      mode="seq"; btnSim.disabled=true; modeHint.hidden=false;
+      setMode("seq");
+    }else{
+      promptEl.textContent="Klingen die beiden Töne rein oder verstimmt?";
+      answersEl.innerHTML='<button class="btn" data-answer="pure">Rein</button>'+
+                          '<button class="btn" data-answer="off">Verstimmt</button>';
+      btnSim.disabled=false; modeHint.hidden=true;
+    }
+  }
+  function setMode(m){
+    mode=m;
+    Array.prototype.forEach.call(document.querySelectorAll("[data-mode]"),function(b){
+      b.setAttribute("aria-pressed", b.dataset.mode===m ? "true":"false");
+    });
+  }
+
+  /* ----- Ereignisse ----- */
+  centsEl.addEventListener("input",function(){
+    centsOut.textContent="genau "+centsEl.value+" Cent";
+    document.getElementById("rndLabel").textContent="Stattdessen zufällig zwischen 2 und "+centsEl.value+" Cent";
+    invalidate();
+  });
+  rndEl.addEventListener("change",function(){ invalidate(); });
+  baseEl.addEventListener("change",function(){ invalidate(); });
+  durEl.addEventListener("input",function(){ durOut.textContent=num(+durEl.value,1)+" s"; });
+
+  document.querySelectorAll("[data-task]").forEach(function(b){
+    b.addEventListener("click",function(){
+      task=b.dataset.task;
+      document.querySelectorAll("[data-task]").forEach(function(x){
+        x.setAttribute("aria-pressed", x===b ? "true":"false");
+      });
+      renderAnswers(); invalidate("Zum Starten anhören.");
+    });
+  });
+  document.querySelectorAll("[data-mode]").forEach(function(b){
+    b.addEventListener("click",function(){ setMode(b.dataset.mode); });
+  });
+
+  answersEl.addEventListener("click",function(e){
+    var b=e.target.closest("[data-answer]"); if(b) answer(b.dataset.answer);
+  });
+  playBtn.addEventListener("click",function(){ if(q) play(); else newQuestion(); });
+  nextBtn.addEventListener("click",newQuestion);
+  document.getElementById("reset").addEventListener("click",function(){
+    stats={right:0,total:0,streak:0};
+    document.getElementById("sRight").textContent="0";
+    document.getElementById("sTotal").textContent="0";
+    document.getElementById("sStreak").textContent="0";
+  });
+
+  document.querySelectorAll("[data-free]").forEach(function(b){
+    b.addEventListener("click",function(){
+      stopAll();
+      var kind=b.dataset.free; if(kind==="stop") return;
+      var base = baseEl.value==="rand" ? 440 : parseFloat(baseEl.value);
+      var off  = cent2f(base,+centsEl.value);
+      if(kind==="ref") sustain(base);
+      else if(kind==="off") sustain(off);
+      else { sustain(base); sustain(off); }
+    });
+  });
+
+  document.addEventListener("keydown",function(e){
+    if(/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+    if(e.code==="Space"){ e.preventDefault(); q?play():newQuestion(); }
+    else if(e.key==="1"||e.key==="2"){
+      var bs=answersEl.querySelectorAll("[data-answer]");
+      var b=bs[+e.key-1]; if(b&&!b.disabled) answer(b.dataset.answer);
+    }
+    else if(e.key==="Enter"&&!nextBtn.disabled){ newQuestion(); }
+  });
+
+  renderAnswers();
+  setAnswersEnabled(false);
+})();
+</script>
+</body>
+</html>
