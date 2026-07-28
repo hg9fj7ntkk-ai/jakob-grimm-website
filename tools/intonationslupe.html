@@ -70,6 +70,17 @@
   .task{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
   .prompt{font-family:var(--serif);font-size:1.35rem;margin:0 0 4px}
   .prompt-sub{margin:0 0 18px;color:var(--ink-soft);font-size:.9rem}
+  .task-info{margin:0 0 10px;color:var(--ink-soft);font-size:.9rem;max-width:52ch}
+  .note{
+    margin:0 0 16px;padding:9px 12px;border-left:3px solid var(--signal);
+    background:var(--signal-weak);border-radius:0 6px 6px 0;font-size:.85rem;color:var(--ink);
+  }
+  input[type=number]{
+    font:inherit;width:100%;margin-top:8px;padding:7px 8px;
+    border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);
+  }
+  .bar{height:6px;background:var(--signal-weak);border-radius:3px;overflow:hidden;margin:14px 0 8px}
+  .bar span{display:block;height:100%;width:0;background:var(--signal)}
   .btn{
     font:inherit;font-weight:600;padding:11px 18px;border-radius:8px;border:1px solid var(--ink);
     background:var(--ink);color:#fff;cursor:pointer;
@@ -125,8 +136,8 @@
 
     <div class="field">
       <label for="cents">Abweichung <span class="readout" id="centsOut">genau 6 Cent</span></label>
-      <input type="range" id="cents" min="2" max="15" step="1" value="6">
-      <p class="hint">Der zweite Ton liegt genau um diesen Wert höher oder tiefer. 2 Cent ist die Grenze des Hörbaren, 15 Cent hört man deutlich.</p>
+      <input type="range" id="cents" min="2" max="25" step="1" value="6">
+      <p class="hint">Der zweite Ton liegt genau um diesen Wert höher oder tiefer. 2 Cent ist die Grenze des Hörbaren, 15 Cent hört man deutlich. Bei 21,5 und 23,5 Cent liegen das syntonische und das pythagoreische Komma.</p>
     </div>
 
     <div class="field">
@@ -137,16 +148,24 @@
     </div>
 
     <div class="field">
+      <label for="a4">Kammerton a¹</label>
+      <input type="number" id="a4" min="400" max="460" step="0.5" value="443" aria-label="Kammerton a eingestrichen in Hertz">
+      <p class="hint">Alle Grundtöne beziehen sich hierauf. Voreingestellt ist der Orchesterwert 443 Hz; Stimmgeräte und Schulinstrumente stehen meist auf 440.</p>
+    </div>
+
+    <div class="field">
       <label for="base">Grundton</label>
       <select id="base">
-        <option value="146.83">d – 146,83 Hz</option>
-        <option value="220">a – 220,00 Hz</option>
-        <option value="293.66">d¹ – 293,66 Hz</option>
-        <option value="440" selected>a¹ – 440,00 Hz</option>
-        <option value="587.33">d² – 587,33 Hz</option>
-        <option value="880">a² – 880,00 Hz</option>
-        <option value="rand">zufällig</option>
+        <option value="-19">d</option>
+        <option value="-12">a</option>
+        <option value="-7">d¹</option>
+        <option value="0" selected>a¹</option>
+        <option value="5">d²</option>
+        <option value="12">a²</option>
+        <option value="rand">zufällig aus dieser Liste</option>
+        <option value="custom">eigene Frequenz …</option>
       </select>
+      <input type="number" id="customHz" min="60" max="4000" step="0.01" value="466.16" hidden aria-label="Eigene Frequenz in Hertz">
     </div>
 
     <div class="field">
@@ -180,7 +199,9 @@
   <!-- ---------- Aufgabe ---------- -->
   <div>
   <section class="task" aria-live="polite">
+    <p class="note">Am besten mit Kopfhörern. Über Laptop- oder Raumlautsprecher sind Unterschiede unter 5 Cent kaum zu hören — das liegt dann an der Wiedergabe, nicht am Gehör.</p>
     <p class="prompt" id="prompt">Ist der zweite Ton höher oder tiefer?</p>
+    <p class="task-info" id="taskInfo">Sie hören zwei Sinustöne nacheinander. Der zweite ist um den eingestellten Wert verstimmt – mal nach oben, mal nach unten. Entscheiden Sie, in welche Richtung.</p>
     <p class="prompt-sub" id="promptSub">Zum Starten anhören.</p>
 
     <div class="row">
@@ -214,14 +235,43 @@
 
   <!-- ---------- Freies Hören ---------- -->
   <section class="panel free" aria-label="Freies Hören">
-    <h2>Frei hören</h2>
+    <h2>Frei hören — unabhängig von der Aufgabe</h2>
+    <p class="hint" style="margin:0 0 12px">Hier läuft keine Aufgabe und nichts wird gewertet. Die Töne richten sich immer nach den Einstellungen links, nicht nach der zuletzt gestellten Aufgabe.</p>
     <div class="row">
       <button class="btn ghost" data-free="ref">Grundton</button>
-      <button class="btn ghost" data-free="off">Grundton + Abstand</button>
-      <button class="btn ghost" data-free="both">beide zusammen</button>
+      <button class="btn ghost" data-free="off" id="freeOffBtn">Grundton + 6 Cent</button>
+      <button class="btn ghost" data-free="both">beide gleichzeitig</button>
       <button class="btn ghost" data-free="stop">Stopp</button>
     </div>
-    <p class="hint">Klingt so lange, bis Sie stoppen oder eine Aufgabe starten. Zusammen erklingend wird der Abstand als Schwebung hörbar.</p>
+    <p class="hint" id="freeRead">Klingt als Dauerton, bis Sie stoppen.</p>
+  </section>
+
+  <!-- ---------- Sweep ---------- -->
+  <section class="panel free" aria-label="Verstimmung hörbar machen">
+    <h2>Vom Einklang zum Intervall</h2>
+    <p class="hint" style="margin:0 0 12px">Zwei Töne starten exakt gleich und werden dann gleichmäßig auseinandergezogen. Die Schwebung wird immer schneller, wird zur Rauigkeit und schließlich zum Intervall. Am Ziel bleibt das Intervall fünf Sekunden stehen, damit es als Klang erkennbar wird.</p>
+    <div class="row" style="align-items:flex-end">
+      <div style="flex:1;min-width:130px">
+        <label for="sweepTarget">Bis zu</label>
+        <select id="sweepTarget">
+          <option value="50">50 Cent – Viertelton</option>
+          <option value="100">100 Cent – kleine Sekunde</option>
+          <option value="200" selected>200 Cent – große Sekunde</option>
+          <option value="300">300 Cent – kleine Terz</option>
+        </select>
+      </div>
+      <div style="flex:1;min-width:130px">
+        <label for="sweepDur">Dauer</label>
+        <select id="sweepDur">
+          <option value="15">15 Sekunden</option>
+          <option value="30" selected>30 Sekunden</option>
+          <option value="60">60 Sekunden</option>
+        </select>
+      </div>
+      <button class="btn" id="sweepBtn">Starten</button>
+    </div>
+    <div class="bar" id="sweepBar" hidden><span id="sweepFill"></span></div>
+    <p class="caption" id="sweepRead">Abweichung 0 Cent</p>
   </section>
 
   <footer>
@@ -266,6 +316,7 @@
     g.gain.exponentialRampToValueAtTime(gainValue(),t+0.03);
     o.connect(g); g.connect(a.destination); o.start(t);
     o._g=g; live.push(o);
+    return o;
   }
   function stopAll(){
     if(!ctx) { live=[]; return; }
@@ -290,18 +341,43 @@
       answersEl=document.getElementById("answers"), promptEl=document.getElementById("prompt"),
       subEl=document.getElementById("promptSub"), verdict=document.getElementById("verdict"),
       vHead=document.getElementById("verdictHead"), btnSim=document.getElementById("btnSim"),
-      modeHint=document.getElementById("modeHint");
+      modeHint=document.getElementById("modeHint"), taskInfo=document.getElementById("taskInfo"),
+      customHz=document.getElementById("customHz"), a4El=document.getElementById("a4"), freeOffBtn=document.getElementById("freeOffBtn"),
+      freeRead=document.getElementById("freeRead"), sweepBtn=document.getElementById("sweepBtn"),
+      sweepTarget=document.getElementById("sweepTarget"), sweepDur=document.getElementById("sweepDur"),
+      sweepBar=document.getElementById("sweepBar"), sweepFill=document.getElementById("sweepFill"),
+      sweepRead=document.getElementById("sweepRead");
 
   var task="dir", mode="seq";
   var q=null, stats={right:0,total:0,streak:0};
 
-  var PITCHES=[146.83,220,293.66,440,587.33,880];
+  var SEMIS=[-19,-12,-7,0,5,12];        // Halbtonabstände zu a¹: d, a, d¹, a¹, d², a²
   function cent2f(f,c){ return f*Math.pow(2,c/1200); }
   function num(x,d){ return x.toFixed(d).replace(".",","); }
 
+  function kammerton(){ return Math.min(460,Math.max(400,parseFloat(a4El.value)||443)); }
+  function fromSemi(s){ return kammerton()*Math.pow(2,s/12); }
+
+  /* Beschriftung der Grundtonliste an den Kammerton anpassen */
+  function updateBaseLabels(){
+    Array.prototype.forEach.call(baseEl.options,function(o){
+      var v=parseFloat(o.value);
+      if(!isNaN(v)) o.textContent=o.textContent.split(" – ")[0]+" – "+num(fromSemi(v),2)+" Hz";
+    });
+  }
+
+  /* Grundton auflösen. allowRandom=false für Frei hören und Sweep, damit dort
+     nicht bei jedem Klick eine andere Lage erklingt. */
+  function baseFreq(allowRandom){
+    var v=baseEl.value;
+    if(v==="custom") return Math.min(4000,Math.max(60,parseFloat(customHz.value)||440));
+    if(v==="rand")   return allowRandom ? fromSemi(SEMIS[Math.floor(Math.random()*SEMIS.length)]) : fromSemi(0);
+    return fromSemi(parseFloat(v));
+  }
+
   /* ----- Aufgabe erzeugen ----- */
   function newQuestion(){
-    var base = baseEl.value==="rand" ? PITCHES[Math.floor(Math.random()*PITCHES.length)] : parseFloat(baseEl.value);
+    var base = baseFreq(true);
     var max=+centsEl.value;
     var c = rndEl.checked ? 2+Math.floor(Math.random()*(max-1)) : max;
     var detuned = task==="dir" ? true : Math.random()<0.5;
@@ -316,7 +392,7 @@
   }
 
   function play(){
-    stopAll();
+    stopSweep(); stopAll();
     if(!q) return;
     var d=+durEl.value;
     if(mode==="sim"){ tone(q.f1,0.05,d); tone(q.f2,0.05,d); }
@@ -330,7 +406,7 @@
   /* Einstellung geändert: laufende Aufgabe verwerfen, damit der nächste
      Klick auf „Anhören" garantiert mit den aktuellen Werten rechnet. */
   function invalidate(msg){
-    stopAll(); q=null;
+    stopSweep(); stopAll(); q=null;
     verdict.hidden=true; nextBtn.disabled=true; setAnswersEnabled(false);
     subEl.textContent = msg || "Einstellung geändert – „Anhören“ startet eine neue Aufgabe.";
   }
@@ -384,12 +460,14 @@
   function renderAnswers(){
     if(task==="dir"){
       promptEl.textContent="Ist der zweite Ton höher oder tiefer?";
+      taskInfo.textContent="Sie hören zwei Sinustöne nacheinander. Der zweite ist um den eingestellten Wert verstimmt – mal nach oben, mal nach unten. Entscheiden Sie, in welche Richtung.";
       answersEl.innerHTML='<button class="btn" data-answer="up">Zweiter ist höher</button>'+
                           '<button class="btn" data-answer="down">Zweiter ist tiefer</button>';
       mode="seq"; btnSim.disabled=true; modeHint.hidden=false;
       setMode("seq");
     }else{
       promptEl.textContent="Klingen die beiden Töne rein oder verstimmt?";
+      taskInfo.textContent="Diesmal ist offen, ob überhaupt etwas abweicht: In der Hälfte der Fälle sind beide Töne exakt gleich hoch – das ist „rein“. In der anderen Hälfte weicht der zweite um den eingestellten Wert ab – das ist „verstimmt“.";
       answersEl.innerHTML='<button class="btn" data-answer="pure">Rein</button>'+
                           '<button class="btn" data-answer="off">Verstimmt</button>';
       btnSim.disabled=false; modeHint.hidden=true;
@@ -406,10 +484,17 @@
   centsEl.addEventListener("input",function(){
     centsOut.textContent="genau "+centsEl.value+" Cent";
     document.getElementById("rndLabel").textContent="Stattdessen zufällig zwischen 2 und "+centsEl.value+" Cent";
+    freeOffBtn.textContent="Grundton + "+centsEl.value+" Cent";
     invalidate();
   });
   rndEl.addEventListener("change",function(){ invalidate(); });
-  baseEl.addEventListener("change",function(){ invalidate(); });
+  baseEl.addEventListener("change",function(){
+    customHz.hidden = baseEl.value!=="custom";
+    if(!customHz.hidden) customHz.focus();
+    invalidate();
+  });
+  customHz.addEventListener("change",function(){ invalidate(); });
+  a4El.addEventListener("change",function(){ updateBaseLabels(); invalidate(); });
   durEl.addEventListener("input",function(){ durOut.textContent=num(+durEl.value,1)+" s"; });
 
   document.querySelectorAll("[data-task]").forEach(function(b){
@@ -439,14 +524,59 @@
 
   document.querySelectorAll("[data-free]").forEach(function(b){
     b.addEventListener("click",function(){
-      stopAll();
-      var kind=b.dataset.free; if(kind==="stop") return;
-      var base = baseEl.value==="rand" ? 440 : parseFloat(baseEl.value);
-      var off  = cent2f(base,+centsEl.value);
-      if(kind==="ref") sustain(base);
-      else if(kind==="off") sustain(off);
-      else { sustain(base); sustain(off); }
+      stopSweep(); stopAll();
+      var kind=b.dataset.free; if(kind==="stop"){ freeRead.textContent="Gestoppt."; return; }
+      var base=baseFreq(false), off=cent2f(base,+centsEl.value);
+      if(kind==="ref"){ sustain(base); freeRead.textContent="Es klingt "+num(base,2)+" Hz."; }
+      else if(kind==="off"){ sustain(off); freeRead.textContent="Es klingt "+num(off,2)+" Hz – das sind "+centsEl.value+" Cent über "+num(base,2)+" Hz."; }
+      else { sustain(base); sustain(off);
+             freeRead.textContent=num(base,2)+" Hz und "+num(off,2)+" Hz gleichzeitig – Schwebung "+num(Math.abs(off-base),2)+" Hz."; }
     });
+  });
+
+  /* ----- Sweep: vom Einklang bis zum Intervall ----- */
+  var HOLD=5;                       // Sekunden, die das Zielintervall am Ende stehen bleibt
+  var sweep={raf:0, t0:0, dur:0, target:0, base:0, name:"", timer:0};
+  function stopSweep(){
+    if(sweep.raf) cancelAnimationFrame(sweep.raf);
+    if(sweep.timer) clearTimeout(sweep.timer);
+    sweep.raf=0; sweep.timer=0;
+    sweepBtn.textContent="Starten"; sweepBar.hidden=true; sweepFill.style.width="0";
+  }
+  function startSweep(){
+    stopAll(); stopSweep();
+    var a=audio(), t=a.currentTime;
+    sweep.base=baseFreq(false); sweep.dur=+sweepDur.value; sweep.target=+sweepTarget.value;
+    sweep.name=(sweepTarget.options[sweepTarget.selectedIndex].text.split("–")[1]||"").trim();
+    sustain(sweep.base);
+    var o2=sustain(sweep.base);
+    o2.detune.setValueAtTime(0,t);
+    o2.detune.linearRampToValueAtTime(sweep.target,t+sweep.dur);   // linear in Cent
+    /* danach bleibt detune auf dem Zielwert stehen — das Intervall klingt weiter */
+    sweep.t0=performance.now();
+    sweepBtn.textContent="Stopp"; sweepBar.hidden=false;
+    sweep.timer=setTimeout(function(){ stopAll(); stopSweep();
+      sweepRead.textContent="Ende: "+sweep.target+" Cent"+(sweep.name?" – "+sweep.name:"")+"."; },
+      (sweep.dur+HOLD)*1000+120);
+    tickSweep();
+  }
+  function tickSweep(){
+    var el=(performance.now()-sweep.t0)/1000, total=sweep.dur+HOLD;
+    var p=Math.min(1,el/sweep.dur);
+    sweepFill.style.width=(Math.min(1,el/total)*100)+"%";
+    if(p<1){
+      var c=p*sweep.target, beat=Math.abs(cent2f(sweep.base,c)-sweep.base);
+      sweepRead.textContent="Abweichung "+num(c,0)+" Cent · Abstand "+num(beat,1)+" Hz"+
+        (beat<1?" – ganz langsames Wogen":beat<15?" – deutliche Schwebung":beat<40?" – Rauigkeit":" – zwei getrennte Töne");
+    }else{
+      sweepRead.textContent="Ziel erreicht: "+sweep.target+" Cent"+(sweep.name?" – "+sweep.name:"")+
+        ". Klingt noch "+Math.max(0,Math.ceil(total-el))+" Sekunden.";
+    }
+    if(el<total) sweep.raf=requestAnimationFrame(tickSweep);
+  }
+  sweepBtn.addEventListener("click",function(){
+    if(sweep.raf||sweep.timer){ stopAll(); stopSweep(); sweepRead.textContent="Abgebrochen."; }
+    else startSweep();
   });
 
   document.addEventListener("keydown",function(e){
@@ -459,6 +589,7 @@
     else if(e.key==="Enter"&&!nextBtn.disabled){ newQuestion(); }
   });
 
+  updateBaseLabels();
   renderAnswers();
   setAnswersEnabled(false);
 })();
