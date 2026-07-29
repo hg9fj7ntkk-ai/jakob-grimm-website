@@ -117,6 +117,12 @@
   :focus-visible{outline:2px solid var(--signal);outline-offset:2px}
   body.embed{padding:0 0 10px;background:transparent}
   body.embed header{display:none}
+
+  /* Betriebsarten: ?modus=demo (vorführen) und ?modus=training (üben).
+     Ohne Parameter ist alles sichtbar. */
+  body.demo .f-rnd, body.demo .f-task, body.demo .f-mode, body.demo .f-dur,
+  body.demo #taskSection, body.demo #kbdFoot{display:none}
+  body.training #freeSection, body.training #sweepSection, body.training .f-kammer{display:none}
   @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -134,26 +140,26 @@
   <section class="panel" aria-label="Einstellungen">
     <h2>Einstellungen</h2>
 
-    <div class="field">
+    <div class="field f-cents">
       <label for="cents">Abweichung <span class="readout" id="centsOut">genau 6 Cent</span></label>
       <input type="range" id="cents" min="2" max="25" step="1" value="6">
       <p class="hint">Der zweite Ton liegt genau um diesen Wert höher oder tiefer. 2 Cent ist die Grenze des Hörbaren, 15 Cent hört man deutlich. Bei 21,5 und 23,5 Cent liegen das syntonische und das pythagoreische Komma.</p>
     </div>
 
-    <div class="field">
+    <div class="field f-rnd">
       <label class="check" for="rnd">
         <input type="checkbox" id="rnd">
         <span id="rndLabel">Stattdessen zufällig zwischen 2 und 6 Cent</span>
       </label>
     </div>
 
-    <div class="field">
+    <div class="field f-kammer">
       <label for="a4">Kammerton a¹</label>
       <input type="number" id="a4" min="400" max="460" step="0.5" value="443" aria-label="Kammerton a eingestrichen in Hertz">
       <p class="hint">Alle Grundtöne beziehen sich hierauf. Voreingestellt ist der Orchesterwert 443 Hz; Stimmgeräte und Schulinstrumente stehen meist auf 440.</p>
     </div>
 
-    <div class="field">
+    <div class="field f-base">
       <label for="base">Grundton</label>
       <select id="base">
         <option value="-19">d</option>
@@ -168,7 +174,7 @@
       <input type="number" id="customHz" min="60" max="4000" step="0.01" value="466.16" hidden aria-label="Eigene Frequenz in Hertz">
     </div>
 
-    <div class="field">
+    <div class="field f-task">
       <span class="legend" id="lblTask">Aufgabe</span>
       <div class="seg" role="group" aria-labelledby="lblTask">
         <button type="button" data-task="dir" aria-pressed="true">höher / tiefer</button>
@@ -176,7 +182,7 @@
       </div>
     </div>
 
-    <div class="field">
+    <div class="field f-mode">
       <span class="legend" id="lblMode">Darbietung</span>
       <div class="seg" role="group" aria-labelledby="lblMode">
         <button type="button" data-mode="seq" aria-pressed="true">nacheinander</button>
@@ -185,7 +191,7 @@
       <p class="hint" id="modeHint">Bei „höher / tiefer“ müssen die Töne nacheinander erklingen.</p>
     </div>
 
-    <div class="field">
+    <div class="field f-dur">
       <label for="dur">Tondauer <span class="readout" id="durOut">1,2 s</span></label>
       <input type="range" id="dur" min="0.4" max="3" step="0.1" value="1.2">
     </div>
@@ -198,7 +204,7 @@
 
   <!-- ---------- Aufgabe ---------- -->
   <div>
-  <section class="task" aria-live="polite">
+  <section class="task" id="taskSection" aria-live="polite">
     <p class="note">Am besten mit Kopfhörern. Über Laptop- oder Raumlautsprecher sind Unterschiede unter 5 Cent kaum zu hören — das liegt dann an der Wiedergabe, nicht am Gehör.</p>
     <p class="prompt" id="prompt">Ist der zweite Ton höher oder tiefer?</p>
     <p class="task-info" id="taskInfo">Sie hören zwei Sinustöne nacheinander. Der zweite ist um den eingestellten Wert verstimmt – mal nach oben, mal nach unten. Entscheiden Sie, in welche Richtung.</p>
@@ -234,7 +240,7 @@
   </section>
 
   <!-- ---------- Freies Hören ---------- -->
-  <section class="panel free" aria-label="Freies Hören">
+  <section class="panel free" id="freeSection" aria-label="Freies Hören">
     <h2>Frei hören — unabhängig von der Aufgabe</h2>
     <p class="hint" style="margin:0 0 12px">Hier läuft keine Aufgabe und nichts wird gewertet. Die Töne richten sich immer nach den Einstellungen links, nicht nach der zuletzt gestellten Aufgabe.</p>
     <div class="row">
@@ -247,7 +253,7 @@
   </section>
 
   <!-- ---------- Sweep ---------- -->
-  <section class="panel free" aria-label="Verstimmung hörbar machen">
+  <section class="panel free" id="sweepSection" aria-label="Verstimmung hörbar machen">
     <h2>Vom Einklang zum Intervall</h2>
     <p class="hint" style="margin:0 0 12px">Zwei Töne starten exakt gleich und werden dann gleichmäßig auseinandergezogen. Die Schwebung wird immer schneller, wird zur Rauigkeit und schließlich zum Intervall. Am Ziel bleibt das Intervall fünf Sekunden stehen, damit es als Klang erkennbar wird.</p>
     <div class="row" style="align-items:flex-end">
@@ -274,7 +280,7 @@
     <p class="caption" id="sweepRead">Abweichung 0 Cent</p>
   </section>
 
-  <footer>
+  <footer id="kbdFoot">
     <p><kbd>Leertaste</kbd> anhören · <kbd>1</kbd> / <kbd>2</kbd> antworten · <kbd>Enter</kbd> nächste Aufgabe</p>
   </footer>
   </div>
@@ -288,6 +294,16 @@
   /* ----- Einbettungsmodus: ?embed blendet Kopfzeile und Außenabstand aus ----- */
   if(/[?&]embed/.test(location.search)) document.body.classList.add("embed");
 
+  /* ----- Betriebsart: ?modus=demo zum Vorführen, ?modus=training zum Üben ----- */
+  var MODE=(location.search.match(/[?&]modus=(demo|training)/)||[])[1]||"voll";
+  if(MODE!=="voll") document.body.classList.add(MODE);
+  if(MODE==="demo"){
+    document.querySelector("h1").textContent="Vom Einklang zum Intervall";
+    document.querySelector(".lede").textContent="Zwei Töne beginnen exakt gleich und rücken langsam auseinander. Aus Wogen wird Rauigkeit, aus Rauigkeit ein Intervall.";
+    document.querySelector(".eyebrow").textContent="Akustik · Schwebung";
+    document.querySelector(".f-cents .hint").textContent="Legt fest, wie weit der Vergleichston im Bereich „Frei hören“ vom Grundton abweicht. Der Verlauf darunter beginnt immer bei null.";
+  }
+
   /* ----- Audio ----- */
   var ctx=null, live=[];           // live = laufende Oszillator-Knoten
   function audio(){
@@ -296,6 +312,24 @@
     return ctx;
   }
   function gainValue(){ return (+volEl.value/100)*0.30; }
+
+  /* ?audio=info blendet unten eine Statuszeile ein — auf Mobilgeräten die
+     einzige Möglichkeit, den Zustand der Audio-Engine zu sehen. */
+  var infoBox=null;
+  if(/[?&]audio=info/.test(location.search)){
+    infoBox=document.createElement("p");
+    infoBox.style.cssText="position:sticky;bottom:0;margin:12px 0 0;padding:8px 10px;"+
+      "background:var(--signal);color:#fff;font-family:var(--mono);font-size:12px;border-radius:6px";
+    infoBox.textContent="Audio: noch nicht gestartet";
+    document.querySelector(".wrap").appendChild(infoBox);
+    setInterval(function(){
+      if(!infoBox) return;
+      infoBox.textContent = ctx
+        ? "Audio: "+ctx.state+" · "+ctx.sampleRate+" Hz · Laufzeit "+ctx.currentTime.toFixed(1)+" s"+
+          " · Knoten "+live.length+" · Pegel "+gainValue().toFixed(3)
+        : "Audio: noch nicht gestartet";
+    },500);
+  }
 
   function tone(freq,start,dur){          // Sinuston mit weicher Hüllkurve
     var a=audio(), o=a.createOscillator(), g=a.createGain();
@@ -580,6 +614,7 @@
   });
 
   document.addEventListener("keydown",function(e){
+    if(MODE==="demo") return;
     if(/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
     if(e.code==="Space"){ e.preventDefault(); q?play():newQuestion(); }
     else if(e.key==="1"||e.key==="2"){
