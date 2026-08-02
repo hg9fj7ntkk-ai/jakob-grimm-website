@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Die Terz einpassen · Reine Stimmung im Dreiklang</title>
+<style>
+  :root{
+    --ink:#101820; --ink-soft:#4b5763; --paper:#eef1f0; --surface:#ffffff;
+    --line:#d2dad8; --signal:#0e6f79; --signal-weak:#dbeaec;
+    --right:#2b6b46; --wrong:#a33a2b; --radius:10px;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:24px 16px 40px;background:var(--paper);color:var(--ink);
+       font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%}
+  .wrap{max-width:900px;margin:0 auto}
+  header{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:24px}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.5rem,4vw,2.1rem);margin:0 0 6px}
+  .lede{margin:0;color:var(--ink-soft);max-width:56ch}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+           color:var(--signal);margin:0 0 8px}
+  .layout{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr);gap:24px;align-items:start}
+  @media(max-width:720px){.layout{grid-template-columns:1fr}}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .panel h2{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+            color:var(--ink-soft);margin:0 0 14px;font-weight:600}
+  .field{margin-bottom:16px} .field:last-child{margin-bottom:0}
+  label,.legend{display:block;font-size:.85rem;font-weight:600;margin-bottom:6px}
+  select,input[type=range]{width:100%}
+  select{font:inherit;padding:7px 8px;border:1px solid var(--line);border-radius:6px;
+         background:var(--surface);color:var(--ink)}
+  .seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .seg button{flex:1;font:inherit;font-size:.85rem;padding:8px 6px;border:0;background:var(--surface);
+              color:var(--ink-soft);cursor:pointer}
+  .seg button+button{border-left:1px solid var(--line)}
+  .seg button[aria-pressed=true]{background:var(--signal);color:#fff;font-weight:600}
+  .hint{font-size:.78rem;color:var(--ink-soft);margin:6px 0 0}
+  .btn{font:inherit;font-weight:600;padding:11px 18px;border-radius:8px;border:1px solid var(--ink);
+       background:var(--ink);color:#fff;cursor:pointer}
+  .btn.ghost{background:var(--surface);color:var(--ink)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn:hover:not(:disabled){filter:brightness(1.12)}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .stage{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .note{margin:0 0 16px;padding:9px 12px;border-left:3px solid var(--signal);background:var(--signal-weak);
+        border-radius:0 6px 6px 0;font-size:.85rem}
+  .prompt{font-family:var(--serif);font-size:1.3rem;margin:0 0 4px}
+  .prompt-sub{margin:0 0 16px;color:var(--ink-soft);font-size:.9rem;max-width:52ch}
+
+  .board{display:flex;gap:20px;align-items:stretch;margin:18px 0}
+  .zone{position:relative;flex:0 0 190px;height:340px;border:1px solid var(--line);border-radius:8px;
+        background:linear-gradient(var(--surface),var(--signal-weak));touch-action:none;cursor:ns-resize;
+        overflow:hidden;user-select:none;-webkit-user-select:none}
+  .zone:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+  .bar{position:absolute;left:10px;right:10px;height:26px;margin-top:-13px;border-radius:5px;
+       background:var(--signal);color:#fff;font-size:.8rem;font-weight:600;
+       display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+  .fixed{position:absolute;left:0;right:0;height:0;border-top:2px solid var(--ink-soft)}
+  .fixed span{position:absolute;right:6px;top:3px;font-size:.72rem;color:var(--ink-soft);
+              background:var(--surface);padding:0 4px;border-radius:3px}
+  .tick{position:absolute;left:0;right:0;height:0;border-top:1px dashed var(--right)}
+  .tick.et{border-top-color:var(--ink-soft)}
+  .tick span{position:absolute;left:6px;top:3px;font-size:.7rem;font-family:var(--mono);
+             background:var(--surface);padding:0 4px;border-radius:3px}
+  .tick.et span{color:var(--ink-soft)} .tick span{color:var(--right)}
+  .side{flex:1;min-width:200px}
+  .voices{list-style:none;margin:0 0 16px;padding:0;font-family:var(--mono);font-size:.82rem}
+  .voices li{padding:5px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+  .voices li.third{color:var(--signal);font-weight:600}
+  .result{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+  .result[hidden]{display:none}
+  .verdict{font-family:var(--serif);font-size:1.1rem;margin:0 0 8px}
+  .verdict.ok{color:var(--right)} .verdict.no{color:var(--wrong)}
+  .coach{margin:0 0 12px;font-size:.9rem;max-width:54ch}
+  dl.facts{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0 0 14px;font-size:.86rem}
+  dl.facts dt{color:var(--ink-soft)} dl.facts dd{margin:0;font-family:var(--mono)}
+  footer{margin-top:22px;font-size:.78rem;color:var(--ink-soft)}
+  kbd{font-family:var(--mono);font-size:.75rem;border:1px solid var(--line);border-bottom-width:2px;
+      border-radius:4px;padding:1px 5px;background:var(--surface)}
+  :focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+  body.embed{padding:0 0 10px;background:transparent}
+  body.embed header{display:none}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="eyebrow">Intonation · Reine Stimmung</p>
+  <h1>Die Terz einpassen</h1>
+  <p class="lede">Grundton und Quinte stehen fest. Ziehen Sie die Terz nach oben oder unten, bis der Dreiklang ruhig steht — bis die Schwebung verschwindet.</p>
+</header>
+
+<div class="layout">
+  <section class="panel" aria-label="Einstellungen">
+    <h2>Einstellungen</h2>
+
+    <div class="field">
+      <span class="legend" id="lblGender">Geschlecht</span>
+      <div class="seg" role="group" aria-labelledby="lblGender">
+        <button type="button" data-gender="dur" aria-pressed="true">Dur</button>
+        <button type="button" data-gender="moll" aria-pressed="false">Moll</button>
+        <button type="button" data-gender="rand" aria-pressed="false">zufällig</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="inv">Lage</label>
+      <select id="inv">
+        <option value="0" selected>Grundstellung – Terz in der Mitte</option>
+        <option value="1">Sextakkord – Terz im Bass</option>
+        <option value="2">Quartsextakkord – Terz oben</option>
+        <option value="rand">zufällig</option>
+      </select>
+      <p class="hint" id="invHint">Im Bass ist die Terz am schwersten zu treffen.</p>
+    </div>
+
+    <div class="field">
+      <span class="legend">Grundton</span>
+      <p class="hint" style="margin:0">Wechselt bei jeder Aufgabe zufällig zwischen d und d¹. Ein fester Grundton führt dazu, dass man sich die absolute Tonhöhe merkt statt das Verhältnis zu hören.</p>
+    </div>
+
+    <div class="field">
+      <label for="a4">Kammerton a¹</label>
+      <input type="number" id="a4" min="400" max="460" step="0.5" value="443"
+             style="font:inherit;width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)">
+    </div>
+
+    <div class="field">
+      <label for="bright">Klangfarbe <span id="brightOut" style="font-family:var(--mono);color:var(--signal)">8 Teiltöne</span></label>
+      <input type="range" id="bright" min="3" max="12" step="1" value="8">
+      <p class="hint">Ohne Obertöne gäbe es keine Schwebung — sie entsteht zwischen den zusammenfallenden Teiltönen.</p>
+    </div>
+
+    <div class="field">
+      <label for="vol">Lautstärke</label>
+      <input type="range" id="vol" min="0" max="100" step="1" value="55">
+    </div>
+  </section>
+
+  <div>
+  <section class="stage">
+    <p class="note">Am besten mit Kopfhörern. Die Schwebung entsteht zwischen leisen Obertönen — über kleine Lautsprecher geht sie unter.</p>
+
+    <p class="prompt" id="prompt">Wo steht die Terz ruhig?</p>
+    <p class="prompt-sub" id="promptSub">Klang starten, dann die Terz ziehen. Solange Sie ziehen, bleibt der Wert verborgen — hören Sie, statt zu schauen.</p>
+    <p id="taskLine" style="margin:0 0 14px;font-family:var(--mono);font-size:.85rem;color:var(--signal)"></p>
+
+    <div class="row">
+      <button class="btn" id="playBtn">Klang starten</button>
+      <button class="btn ghost" id="lockBtn" disabled>Das ist meine Terz</button>
+      <button class="btn ghost" id="nextBtn">Neue Aufgabe</button>
+    </div>
+
+    <div class="board">
+      <div class="zone" id="zone" tabindex="0" role="slider" aria-label="Terz nach oben oder unten ziehen"
+           aria-valuemin="-50" aria-valuemax="50" aria-valuenow="0" aria-valuetext="noch nicht bewertet">
+        <div class="fixed" id="fixHi"><span id="fixHiLbl">Quinte</span></div>
+        <div class="fixed" id="fixLo"><span id="fixLoLbl">Grundton</span></div>
+        <div class="tick" id="tickJust" hidden><span>rein</span></div>
+        <div class="tick et" id="tickEt" hidden><span>gleichstufig</span></div>
+        <div class="bar" id="bar" style="top:170px">Terz</div>
+      </div>
+
+      <div class="side">
+        <ul class="voices" id="voices"></ul>
+        <p class="hint" id="beatRead">Noch kein Klang.</p>
+      </div>
+    </div>
+
+    <div class="result" id="result" hidden>
+      <p class="verdict" id="verdict"></p>
+      <p class="coach" id="coach"></p>
+      <dl class="facts">
+        <dt>Akkord</dt><dd id="fChord"></dd>
+        <dt>Ihre Terz</dt><dd id="fMine"></dd>
+        <dt>Zur reinen Terz</dt><dd id="fJust"></dd>
+        <dt>Zur gleichstufigen</dt><dd id="fEt"></dd>
+        <dt>Schwebung</dt><dd id="fBeat"></dd>
+      </dl>
+      <div class="row">
+        <button class="btn ghost" data-ctrl="mine">Ihre Terz</button>
+        <button class="btn ghost" data-ctrl="just">Reine Terz</button>
+        <button class="btn ghost" data-ctrl="et">Gleichstufige Terz</button>
+        <button class="btn ghost" data-ctrl="stop">Stopp</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><kbd>↑</kbd> <kbd>↓</kbd> feiner ziehen · <kbd>Enter</kbd> festlegen · <kbd>Leertaste</kbd> Klang an und aus</p>
+  </footer>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  if(/[?&]embed/.test(location.search)) document.body.classList.add("embed");
+
+  var JUST={dur:386.3137,moll:315.6413},        // 5:4 und 6:5 in Cent
+      ET  ={dur:400,      moll:300},
+      FIFTH=701.955,                             // 3:2
+      RANGE=50,                                  // Ziehbereich in Cent
+      PXPC=2.6;                                  // Bildpunkte je Cent
+
+  var ctx=null, wave=null, voices=[], master=null;
+  var genderMode="dur", gender="dur", offset=0, locked=false, playing=false;
+  var curRoot=-14, curInv=0;
+
+  /* Grundtöne von d bis d¹, chromatisch — bei jeder Aufgabe neu gezogen. */
+  var ROOTS=[-19,-18,-17,-16,-15,-14,-13,-12,-11,-10,-9,-8,-7],
+      ROOTNAMES={"-19":"d","-18":"es","-17":"e","-16":"f","-15":"fis","-14":"g","-13":"as",
+                 "-12":"a","-11":"b","-10":"h","-9":"c¹","-8":"cis¹","-7":"d¹"},
+      INVNAMES=["Grundstellung","Sextakkord","Quartsextakkord"];
+  function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+
+  var zone=document.getElementById("zone"), bar=document.getElementById("bar"),
+      invEl=document.getElementById("inv"),
+      a4El=document.getElementById("a4"), brightEl=document.getElementById("bright"),
+      brightOut=document.getElementById("brightOut"), volEl=document.getElementById("vol"),
+      playBtn=document.getElementById("playBtn"), lockBtn=document.getElementById("lockBtn"),
+      nextBtn=document.getElementById("nextBtn"), result=document.getElementById("result"),
+      voicesEl=document.getElementById("voices"), beatRead=document.getElementById("beatRead"),
+      tickJust=document.getElementById("tickJust"), tickEt=document.getElementById("tickEt"),
+      fixHi=document.getElementById("fixHi"), fixLo=document.getElementById("fixLo"),
+      fixHiLbl=document.getElementById("fixHiLbl"), fixLoLbl=document.getElementById("fixLoLbl"),
+      taskLine=document.getElementById("taskLine");
+
+  function num(x,d){ return x.toFixed(d).replace(".",","); }
+  function cent2r(c){ return Math.pow(2,c/1200); }
+  function kammerton(){ return Math.min(460,Math.max(400,parseFloat(a4El.value)||443)); }
+  function rootFreq(){ return kammerton()*Math.pow(2,curRoot/12); }
+
+  /* Die drei Stimmen in Cent über dem Grundton, je nach Lage.
+     Die Terz trägt den gezogenen Versatz. */
+  function chordCents(off){
+    var t=JUST[gender]+off, inv=curInv;
+    if(inv===0) return [{n:"Grundton",c:0},{n:"Terz",c:t,third:true},{n:"Quinte",c:FIFTH}];
+    if(inv===1) return [{n:"Terz",c:t-1200,third:true},{n:"Quinte",c:FIFTH-1200},{n:"Grundton",c:0}];
+    return [{n:"Quinte",c:FIFTH-1200},{n:"Grundton",c:0},{n:"Terz",c:t,third:true}];
+  }
+
+  /* Der Teilton, an dem Grundton und Terz zusammenfallen: 5:4 → 5. bzw. 4.,
+     6:5 → 6. bzw. 5. Dort entsteht die Schwebung. */
+  function beatHz(off){
+    var f0=rootFreq(), p=(gender==="dur")?5:6;
+    return Math.abs(f0*p*(cent2r(off)-1));
+  }
+
+  /* ----- Audio ----- */
+  function audio(){
+    if(!ctx){
+      ctx=new (window.AudioContext||window.webkitAudioContext)();
+      master=ctx.createGain(); master.gain.value=0; master.connect(ctx.destination);
+    }
+    if(ctx.state==="suspended") ctx.resume();
+    return ctx;
+  }
+  function buildWave(){
+    var a=audio(), n=+brightEl.value+1, real=new Float32Array(n), imag=new Float32Array(n);
+    for(var k=1;k<n;k++) imag[k]=1/k;                 // sägezahnartig, blechnah
+    wave=a.createPeriodicWave(real,imag,{disableNormalization:false});
+  }
+  function setMaster(v){
+    if(!master) return;
+    var a=ctx, t=a.currentTime;
+    master.gain.cancelScheduledValues(t);
+    master.gain.setValueAtTime(master.gain.value,t);
+    master.gain.linearRampToValueAtTime(v,t+0.05);
+  }
+  function start(){
+    var a=audio(); if(!wave) buildWave();
+    stopVoices();
+    var f0=rootFreq(), cs=chordCents(offset);
+    cs.forEach(function(v){
+      var o=a.createOscillator(), g=a.createGain();
+      o.setPeriodicWave(wave);
+      o.frequency.setValueAtTime(f0*cent2r(v.c),a.currentTime);
+      g.gain.value=0.33;
+      o.connect(g); g.connect(master); o.start();
+      voices.push({o:o,g:g,third:!!v.third,base:v.c});
+    });
+    setMaster((+volEl.value/100)*0.25);
+    playing=true; playBtn.textContent="Klang aus"; lockBtn.disabled=locked;
+    renderVoices();
+  }
+  function stopVoices(){
+    voices.forEach(function(v){ try{ v.o.stop(); }catch(e){} });
+    voices=[];
+  }
+  function stop(){
+    setMaster(0);
+    setTimeout(stopVoices,80);
+    playing=false; playBtn.textContent="Klang starten"; lockBtn.disabled=true;
+  }
+  /* Terz während des Ziehens nachführen — ohne Neustart, damit der Klang steht */
+  function updateThird(){
+    if(!playing) return;
+    var f0=rootFreq();
+    voices.forEach(function(v){
+      if(!v.third) return;
+      var c=(v.base<0? JUST[gender]+offset-1200 : JUST[gender]+offset);
+      v.o.frequency.setTargetAtTime(f0*cent2r(c),ctx.currentTime,0.012);
+    });
+  }
+
+  /* ----- Anzeige ----- */
+  function yFor(c){ return 170-c*PXPC; }              // Mitte der Zone = reine Terz
+  function renderBar(){
+    bar.style.top=yFor(offset)+"px";
+    zone.setAttribute("aria-valuenow",offset.toFixed(0));
+    zone.setAttribute("aria-valuetext", locked? num(offset,1)+" Cent zur reinen Terz" : "verborgen, bis festgelegt");
+  }
+  function renderFixed(){
+    var cs=chordCents(0), lo=cs[0], hi=cs[2];
+    fixLoLbl.textContent=lo.n; fixHiLbl.textContent=hi.n;
+    fixLo.style.top=(yFor(-RANGE)+26)+"px";
+    fixHi.style.top=(yFor(RANGE)-26)+"px";
+    tickJust.style.top=yFor(0)+"px";
+    tickEt.style.top=yFor(ET[gender]-JUST[gender])+"px";
+  }
+  function renderVoices(){
+    var f0=rootFreq();
+    voicesEl.innerHTML=chordCents(locked?offset:0).map(function(v){
+      var f=f0*cent2r(v.c);
+      return '<li class="'+(v.third?"third":"")+'"><span>'+v.n+'</span><span>'+
+             (v.third&&!locked ? "– – –" : num(f,1)+" Hz")+'</span></li>';
+    }).join("");
+  }
+
+  /* ----- Ziehen ----- */
+  var dragging=false, startY=0, startOff=0;
+  function begin(y){ if(locked) return; dragging=true; startY=y; startOff=offset; zone.focus(); }
+  function move(y){
+    if(!dragging) return;
+    offset=Math.max(-RANGE,Math.min(RANGE, startOff+(startY-y)/PXPC));
+    renderBar(); updateThird();
+    beatRead.textContent = playing ? "Hören Sie auf das Pulsieren im Klang." : "Klang ist aus.";
+  }
+  function end(){ dragging=false; }
+
+  zone.addEventListener("pointerdown",function(e){ begin(e.clientY); zone.setPointerCapture(e.pointerId); e.preventDefault(); });
+  zone.addEventListener("pointermove",function(e){ move(e.clientY); });
+  zone.addEventListener("pointerup",end);
+  zone.addEventListener("pointercancel",end);
+  zone.addEventListener("keydown",function(e){
+    if(locked) return;
+    var step=e.shiftKey?0.5:2;
+    if(e.key==="ArrowUp"){ offset=Math.min(RANGE,offset+step); }
+    else if(e.key==="ArrowDown"){ offset=Math.max(-RANGE,offset-step); }
+    else if(e.key==="Enter"){ lock(); return; }
+    else return;
+    e.preventDefault(); renderBar(); updateThird();
+  });
+
+  /* ----- Festlegen und auswerten ----- */
+  function lock(){
+    if(locked) return;
+    locked=true; lockBtn.disabled=true;
+    var d=offset, dEt=offset-(ET[gender]-JUST[gender]), b=beatHz(d), ad=Math.abs(d);
+
+    document.getElementById("fChord").textContent=ROOTNAMES[curRoot]+" "+
+      (gender==="dur"?"Dur":"Moll")+", "+INVNAMES[curInv];
+    document.getElementById("fMine").textContent=(d>=0?"+":"−")+num(ad,1)+" Cent zur reinen Terz";
+    document.getElementById("fJust").textContent=num(ad,1)+" Cent "+(d>=0?"zu hoch":"zu tief");
+    document.getElementById("fEt").textContent=num(Math.abs(dEt),1)+" Cent "+(dEt>=0?"zu hoch":"zu tief");
+    document.getElementById("fBeat").textContent = b<0.05 ? "praktisch keine"
+      : num(b,2)+" Hz · alle "+num(1/b,2)+" s ein Pulsieren";
+
+    var v=document.getElementById("verdict"), c=document.getElementById("coach");
+    if(ad<=3){ v.className="verdict ok"; v.textContent="Das steht."; }
+    else if(ad<=8){ v.className="verdict ok"; v.textContent="Nah dran."; }
+    else { v.className="verdict no"; v.textContent="Noch nicht ruhig."; }
+
+    if(ad<=3) c.textContent="Unter drei Cent — der Dreiklang klingt zusammen, statt zu pulsieren. Hören Sie zum Vergleich die gleichstufige Terz: der Unterschied ist derselbe, den ein Klavier gegenüber einem Bläsersatz hat.";
+    else if(ad<=8) c.textContent="Die Richtung stimmt. Ziehen Sie beim nächsten Mal langsamer durch den Bereich und achten Sie darauf, wo das Pulsieren am langsamsten wird — dort liegt die reine Terz.";
+    else if(Math.abs(dEt)<=4) c.textContent="Sie sind fast genau auf der gleichstufigen Terz gelandet. Das ist kein Fehler, sondern eine gut trainierte Klaviergewohnheit — im Bläsersatz liegt die reine Terz "+num(ET[gender]-JUST[gender],0)+" Cent daneben.";
+    else if(d>0&&gender==="dur") c.textContent="Zu hoch. Große Terzen werden fast immer zu hoch gegriffen — im reinen Dreiklang liegt sie tiefer, als das Gehör zunächst erwartet.";
+    else c.textContent="Vergleichen Sie mit „Reine Terz hören“, dann ziehen Sie erneut. Wer den Zielklang einmal im Ohr hat, findet ihn beim zweiten Versuch meist auf Anhieb.";
+
+    tickJust.hidden=false; tickEt.hidden=false;
+    renderBar(); renderVoices();
+    result.hidden=false;
+  }
+
+  /* ----- Kontrollhören ----- */
+  function etOffset(){ return ET[gender]-JUST[gender]; }   // +13,7 bei Dur, −15,6 bei Moll
+  function soundThird(c,label){                            // c = Versatz zur reinen Terz
+    var save=offset;
+    offset=c; if(!playing) start(); else updateThird(); offset=save;
+    beatRead.textContent=label;
+  }
+  document.querySelectorAll("[data-ctrl]").forEach(function(b){
+    b.addEventListener("click",function(){
+      var k=b.dataset.ctrl, e=etOffset();
+      if(k==="stop"){ stop(); return; }
+      if(k==="mine"){ soundThird(offset,"Es klingt Ihre Terz."); return; }
+      if(k==="just"){ soundThird(0,"Es klingt die reine Terz — ohne Pulsieren, der Akkord steht still."); return; }
+      soundThird(e,"Es klingt die gleichstufige Terz — "+num(Math.abs(e),1)+" Cent "+
+        (e>0?"über":"unter")+" der reinen. So klingt dieser Akkord auf dem Klavier.");
+    });
+  });
+
+  /* ----- Bedienung ----- */
+  playBtn.addEventListener("click",function(){ playing?stop():start(); });
+  lockBtn.addEventListener("click",lock);
+  nextBtn.addEventListener("click",function(){
+    curRoot=pick(ROOTS.filter(function(r){ return r!==curRoot; }));
+    curInv = invEl.value==="rand" ? pick([0,1,2]) : +invEl.value;
+    gender = genderMode==="rand" ? pick(["dur","moll"]) : genderMode;
+
+    locked=false; result.hidden=true; tickJust.hidden=true; tickEt.hidden=true;
+    var mag=18+Math.random()*27;
+    offset=(Math.random()<0.5?-1:1)*mag;
+    renderFixed(); renderBar(); renderVoices();
+    taskLine.textContent="Dreiklang auf "+ROOTNAMES[curRoot]+
+      (genderMode==="rand" ? "" : ", "+(gender==="dur"?"Dur":"Moll"))+
+      (invEl.value==="rand" ? "" : ", "+INVNAMES[curInv]);
+    if(playing){ start(); } else { beatRead.textContent="Klang starten und ziehen."; }
+    lockBtn.disabled=!playing;
+  });
+
+  document.querySelectorAll("[data-gender]").forEach(function(b){
+    b.addEventListener("click",function(){
+      genderMode=b.dataset.gender;
+      document.querySelectorAll("[data-gender]").forEach(function(x){
+        x.setAttribute("aria-pressed", x===b?"true":"false");
+      });
+      nextBtn.click();
+    });
+  });
+  invEl.addEventListener("change",function(){ nextBtn.click(); });
+  a4El.addEventListener("change",function(){ nextBtn.click(); });
+  brightEl.addEventListener("input",function(){
+    brightOut.textContent=brightEl.value+" Teiltöne";
+    if(ctx){ buildWave(); if(playing) start(); }
+  });
+  volEl.addEventListener("input",function(){ if(playing) setMaster((+volEl.value/100)*0.25); });
+
+  document.addEventListener("keydown",function(e){
+    if(/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+    if(e.code==="Space"){ e.preventDefault(); playing?stop():start(); }
+  });
+
+  nextBtn.click();
+})();
+</script>
+</body>
+</html>
