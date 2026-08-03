@@ -100,6 +100,8 @@
   .verdict.ok .verdict-head{color:var(--right)}
   .verdict.no .verdict-head{color:var(--wrong)}
   dl.facts{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0 0 14px;font-size:.88rem}
+  .coach{margin:0 0 14px;font-size:.9rem;color:var(--ink);max-width:54ch}
+  .coach[hidden]{display:none}
   dl.facts dt{color:var(--ink-soft)}
   dl.facts dd{margin:0;font-family:var(--mono)}
   canvas{width:100%;height:110px;display:block;border:1px solid var(--line);border-radius:6px;background:#fbfcfc}
@@ -222,6 +224,7 @@
 
     <div class="verdict" id="verdict" hidden>
       <p class="verdict-head" id="verdictHead"></p>
+      <p class="coach" id="coach" hidden></p>
       <dl class="facts">
         <dt>Ton 1</dt><dd id="f1"></dd>
         <dt>Ton 2</dt><dd id="f2"></dd>
@@ -255,7 +258,7 @@
   <!-- ---------- Sweep ---------- -->
   <section class="panel free" id="sweepSection" aria-label="Verstimmung hörbar machen">
     <h2>Vom Einklang zum Intervall</h2>
-    <p class="hint" style="margin:0 0 12px">Zwei Töne starten exakt gleich und werden dann gleichmäßig auseinandergezogen. Die Schwebung wird immer schneller, wird zur Rauigkeit und schließlich zum Intervall. Am Ziel bleibt das Intervall fünf Sekunden stehen, damit es als Klang erkennbar wird.</p>
+    <p class="hint" style="margin:0 0 12px">Zwei Töne starten exakt gleich und werden dann gleichmäßig auseinandergezogen. Die Schwebung wird immer schneller, wird zur Rauigkeit und schließlich zum Intervall. Am Ziel bleibt das Intervall fünf Sekunden stehen, damit es als Klang erkennbar wird. Wo diese Übergänge liegen, hängt von der Lage ab — probieren Sie denselben Verlauf einmal auf d und einmal auf a².</p>
     <div class="row" style="align-items:flex-end">
       <div style="flex:1;min-width:130px">
         <label for="sweepTarget">Bis zu</label>
@@ -278,6 +281,7 @@
     </div>
     <div class="bar" id="sweepBar" hidden><span id="sweepFill"></span></div>
     <p class="caption" id="sweepRead">Abweichung 0 Cent</p>
+    <p class="caption" id="cbRead"></p>
   </section>
 
   <footer id="kbdFoot">
@@ -374,7 +378,7 @@
       playBtn=document.getElementById("play"), nextBtn=document.getElementById("next"),
       answersEl=document.getElementById("answers"), promptEl=document.getElementById("prompt"),
       subEl=document.getElementById("promptSub"), verdict=document.getElementById("verdict"),
-      vHead=document.getElementById("verdictHead"), btnSim=document.getElementById("btnSim"),
+      vHead=document.getElementById("verdictHead"), coachEl=document.getElementById("coach"), btnSim=document.getElementById("btnSim"),
       modeHint=document.getElementById("modeHint"), taskInfo=document.getElementById("taskInfo"),
       customHz=document.getElementById("customHz"), a4El=document.getElementById("a4"), freeOffBtn=document.getElementById("freeOffBtn"),
       freeRead=document.getElementById("freeRead"), sweepBtn=document.getElementById("sweepBtn"),
@@ -383,11 +387,27 @@
       sweepRead=document.getElementById("sweepRead");
 
   var task="dir", mode="seq";
-  var q=null, stats={right:0,total:0,streak:0};
+  var q=null, stats={right:0,total:0,streak:0,wrong:0};
 
   var SEMIS=[-19,-12,-7,0,5,12];        // Halbtonabstände zu a¹: d, a, d¹, a¹, d², a²
   function cent2f(f,c){ return f*Math.pow(2,c/1200); }
   function num(x,d){ return x.toFixed(d).replace(".",","); }
+
+  /* Kritische Bandbreite nach Zwicker und Terhardt (1980), in Hertz.
+     Sie wächst mit der Frequenz, aber langsamer als die Frequenz selbst —
+     musikalisch ist sie deshalb in tiefer Lage viel breiter als in hoher. */
+  function critBandHz(f){ var k=f/1000; return 25+75*Math.pow(1+1.4*k*k,0.69); }
+  function hz2cent(f0,d){ return 1200*Math.log(1+d/f0)/Math.LN2; }
+
+  /* Was man bei einem Abstand von d Hertz über dem Grundton f0 hört.
+     Die Schwebungsgrenzen sind absolut (Hertz), die Trennungsgrenze
+     ist es nicht — sie hängt am kritischen Band und damit an der Lage. */
+  function beatState(f0,d){
+    if(d<0.8)              return "ganz langsames Wogen";
+    if(d<20)               return "deutliche Schwebung";
+    if(d<critBandHz(f0))   return "Rauigkeit – beide Töne liegen noch im selben kritischen Band";
+    return "zwei getrennte Töne";
+  }
 
   function kammerton(){ return Math.min(460,Math.max(400,parseFloat(a4El.value)||443)); }
   function fromSemi(s){ return kammerton()*Math.pow(2,s/12); }
@@ -398,6 +418,18 @@
       var v=parseFloat(o.value);
       if(!isNaN(v)) o.textContent=o.textContent.split(" – ")[0]+" – "+num(fromSemi(v),2)+" Hz";
     });
+    updateCbRead();
+  }
+
+  /* Das kritische Band ist musikalisch keine feste Größe: bei d umfasst es
+     fast eine Sexte, bei a² nur noch eine kleine Terz. */
+  function updateCbRead(){
+    var el=document.getElementById("cbRead"); if(!el) return;
+    var f0=baseFreq(false), b=critBandHz(f0), c=hz2cent(f0,b);
+    var iv = c<330?"eine kleine Terz":c<430?"eine große Terz":c<540?"eine Quarte":
+             c<740?"eine Quinte":c<950?"eine Sexte":"mehr als eine Sexte";
+    el.textContent="Kritisches Band in dieser Lage: "+num(b,0)+" Hz, das sind "+num(c,0)+
+      " Cent — etwa "+iv+". Erst darüber trennt das Ohr die beiden Töne wirklich.";
   }
 
   /* Grundton auflösen. allowRandom=false für Frei hören und Sweep, damit dort
@@ -445,19 +477,54 @@
     subEl.textContent = msg || "Einstellung geändert – „Anhören“ startet eine neue Aufgabe.";
   }
 
+  /* Rückmeldung, die die Schwierigkeit einbezieht: Ein Fehler bei 3 Cent
+     bedeutet etwas anderes als einer bei 15. */
+  function verdictText(ok,c){
+    if(ok){
+      if(c<=4)              return "Richtig — und das bei "+c+" Cent. Das liegt an der Grenze dessen, was überhaupt hörbar ist.";
+      if(stats.streak>=5)   return "Richtig. "+stats.streak+" in Folge — das ist kein Zufall mehr.";
+      if(stats.streak===3)  return "Richtig, die dritte hintereinander.";
+      return ["Richtig.","Stimmt.","Getroffen."][stats.total%3];
+    }
+    if(c<=5)                return ["Daneben — bei "+c+" Cent liegen auch geübte Ohren regelmäßig falsch. Das sagt wenig über Ihr Gehör.",
+                                    "Nicht getroffen. "+c+" Cent sind so wenig, dass hier vieles Zufall ist.",
+                                    "Daneben — in diesem Bereich ist Raten normal, nicht peinlich."][stats.wrong%3];
+    if(stats.streak===0 && stats.wrong===1 && stats.right>=3)
+                            return "Daneben. Nach den richtigen davor ist das eine Ausnahme, kein Rückschritt.";
+    return ["Daneben.","Nicht getroffen.","Das war die andere Richtung."][stats.wrong%3];
+  }
+
+  /* Ein Hinweis, was jetzt sinnvoll wäre — nur wenn es wirklich etwas zu raten gibt. */
+  function coachText(ok,c){
+    if(!ok && stats.wrong>=4 && c<=21)
+      return "Vier daneben in Folge: "+c+" Cent ist gerade zu fein. Auf "+(c+4)+" Cent hören Sie den Unterschied wieder deutlich — von dort zurückzuarbeiten ist der schnellere Weg.";
+    if(ok && stats.streak>=8 && c>=4)
+      return "Acht in Folge bei "+c+" Cent. Gehen Sie eine Stufe feiner, auf "+(c-2)+" Cent.";
+    if(stats.total===20 || stats.total===50)
+      return stats.total+" Aufgaben, Quote "+Math.round(stats.right/stats.total*100)+" Prozent. Ab etwa fünfzig wird diese Zahl langsam aussagekräftig — davor entscheidet der Zufall mit.";
+    if(!ok && (stats.wrong===1 || stats.wrong===3))
+      return "Drücken Sie „Anhören“, um dieselbe Aufgabe noch einmal zu hören. Wer die Lösung kennt, hört den Unterschied fast immer — und genau dieses Hinhören prägt sich ein.";
+    return "";
+  }
+
   /* ----- Antwort ----- */
   function answer(val){
     if(!q||q.answered) return;
     q.answered=true; setAnswersEnabled(false); nextBtn.disabled=false;
     var correct = task==="dir" ? (q.sign>0?"up":"down") : (q.detuned?"off":"pure");
     var ok = val===correct;
-    stats.total++; if(ok){stats.right++;stats.streak++;} else {stats.streak=0;}
+    stats.total++;
+    if(ok){ stats.right++; stats.streak++; stats.wrong=0; }
+    else   { stats.streak=0; stats.wrong++; }
     document.getElementById("sRight").textContent=stats.right;
     document.getElementById("sTotal").textContent=stats.total;
     document.getElementById("sStreak").textContent=stats.streak;
 
+    var shown = q.detuned ? q.cents : +centsEl.value;
     verdict.className="verdict "+(ok?"ok":"no");
-    vHead.textContent = ok ? "Richtig." : "Nicht getroffen.";
+    vHead.textContent=verdictText(ok,shown);
+    var tip=coachText(ok,shown);
+    coachEl.textContent=tip; coachEl.hidden=!tip;
     var beatHz=Math.abs(q.f2-q.f1);
     document.getElementById("f1").textContent=num(q.f1,2)+" Hz";
     document.getElementById("f2").textContent=num(q.f2,2)+" Hz";
@@ -523,11 +590,12 @@
   });
   rndEl.addEventListener("change",function(){ invalidate(); });
   baseEl.addEventListener("change",function(){
+    updateCbRead();
     customHz.hidden = baseEl.value!=="custom";
     if(!customHz.hidden) customHz.focus();
     invalidate();
   });
-  customHz.addEventListener("change",function(){ invalidate(); });
+  customHz.addEventListener("change",function(){ updateCbRead(); invalidate(); });
   a4El.addEventListener("change",function(){ updateBaseLabels(); invalidate(); });
   durEl.addEventListener("input",function(){ durOut.textContent=num(+durEl.value,1)+" s"; });
 
@@ -550,7 +618,7 @@
   playBtn.addEventListener("click",function(){ if(q) play(); else newQuestion(); });
   nextBtn.addEventListener("click",newQuestion);
   document.getElementById("reset").addEventListener("click",function(){
-    stats={right:0,total:0,streak:0};
+    stats={right:0,total:0,streak:0,wrong:0};
     document.getElementById("sRight").textContent="0";
     document.getElementById("sTotal").textContent="0";
     document.getElementById("sStreak").textContent="0";
@@ -600,8 +668,8 @@
     sweepFill.style.width=(Math.min(1,el/total)*100)+"%";
     if(p<1){
       var c=p*sweep.target, beat=Math.abs(cent2f(sweep.base,c)-sweep.base);
-      sweepRead.textContent="Abweichung "+num(c,0)+" Cent · Abstand "+num(beat,1)+" Hz"+
-        (beat<1?" – ganz langsames Wogen":beat<15?" – deutliche Schwebung":beat<40?" – Rauigkeit":" – zwei getrennte Töne");
+      sweepRead.textContent="Abweichung "+num(c,0)+" Cent · Abstand "+num(beat,1)+" Hz – "+
+        beatState(sweep.base,beat);
     }else{
       sweepRead.textContent="Ziel erreicht: "+sweep.target+" Cent"+(sweep.name?" – "+sweep.name:"")+
         ". Klingt noch "+Math.max(0,Math.ceil(total-el))+" Sekunden.";
