@@ -123,7 +123,7 @@
   /* Betriebsarten: ?modus=demo (vorführen) und ?modus=training (üben).
      Ohne Parameter ist alles sichtbar. */
   body.demo .f-rnd, body.demo .f-task, body.demo .f-mode, body.demo .f-dur,
-  body.demo #taskSection, body.demo #kbdFoot{display:none}
+  body.demo #taskSection, body.demo #kbdFoot, body.demo .f-timbre{display:none}
   body.training #freeSection, body.training #sweepSection, body.training .f-kammer{display:none}
   @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -171,9 +171,20 @@
         <option value="5">d²</option>
         <option value="12">a²</option>
         <option value="rand">zufällig aus dieser Liste</option>
+        <option value="cycle">reihum durch alle Lagen</option>
         <option value="custom">eigene Frequenz …</option>
       </select>
       <input type="number" id="customHz" min="60" max="4000" step="0.01" value="466.16" hidden aria-label="Eigene Frequenz in Hertz">
+      <p class="hint" id="baseHint">Wer immer in derselben Lage übt, verbessert sich vor allem dort. „Reihum“ führt gleichmäßig durch alle sechs Lagen.</p>
+    </div>
+
+    <div class="field f-timbre">
+      <span class="legend" id="lblTimbre">Klang</span>
+      <div class="seg" role="group" aria-labelledby="lblTimbre">
+        <button type="button" data-timbre="sine" aria-pressed="true">Sinus</button>
+        <button type="button" data-timbre="rich" aria-pressed="false">obertonhaltig</button>
+      </div>
+      <p class="hint">Der Sinuston prüft die reine Tonhöhenwahrnehmung. Obertonhaltige Klänge sind instrumentennäher und geben dem Ohr mehr Anhaltspunkte.</p>
     </div>
 
     <div class="field f-task">
@@ -240,6 +251,7 @@
       <span>Serie <b id="sStreak">0</b></span>
       <button type="button" id="reset">zurücksetzen</button>
     </div>
+    <p class="caption" id="regTally" hidden></p>
   </section>
 
   <!-- ---------- Freies Hören ---------- -->
@@ -335,10 +347,25 @@
     },500);
   }
 
-  function tone(freq,start,dur){          // Sinuston mit weicher Hüllkurve
+  /* Klangfarbe: Sinus oder ein sägezahnartiger Klang mit sechs Teiltönen.
+     Der obertonhaltige Klang gibt dem Ohr mehr spektrale Anhaltspunkte und
+     lässt bei gleichzeitiger Darbietung die Teiltöne gegeneinander schweben. */
+  var wave=null;
+  function setTimbre(o){
+    if(timbre==="rich"){
+      if(!wave){
+        var a=audio(), N=7, re=new Float32Array(N), im=new Float32Array(N);
+        for(var k=1;k<N;k++) im[k]=1/k;
+        wave=a.createPeriodicWave(re,im,{disableNormalization:false});
+      }
+      o.setPeriodicWave(wave);
+    } else o.type="sine";
+  }
+
+  function tone(freq,start,dur){          // Ton mit weicher Hüllkurve
     var a=audio(), o=a.createOscillator(), g=a.createGain();
     var t=a.currentTime+start, atk=0.015, rel=0.06, peak=gainValue();
-    o.type="sine"; o.frequency.setValueAtTime(freq,t);
+    setTimbre(o); o.frequency.setValueAtTime(freq,t);
     g.gain.setValueAtTime(0.0001,t);
     g.gain.exponentialRampToValueAtTime(peak,t+atk);
     g.gain.setValueAtTime(peak,t+dur-rel);
@@ -349,7 +376,7 @@
   }
   function sustain(freq){
     var a=audio(), o=a.createOscillator(), g=a.createGain(), t=a.currentTime;
-    o.type="sine"; o.frequency.setValueAtTime(freq,t);
+    setTimbre(o); o.frequency.setValueAtTime(freq,t);
     g.gain.setValueAtTime(0.0001,t);
     g.gain.exponentialRampToValueAtTime(gainValue(),t+0.03);
     o.connect(g); g.connect(a.destination); o.start(t);
@@ -388,6 +415,8 @@
 
   var task="dir", mode="seq";
   var q=null, stats={right:0,total:0,streak:0,wrong:0};
+  var timbre="sine", cycleIdx=-1;
+  var perReg={};                       // Trefferbilanz je Lage
 
   var SEMIS=[-19,-12,-7,0,5,12];        // Halbtonabstände zu a¹: d, a, d¹, a¹, d², a²
   function cent2f(f,c){ return f*Math.pow(2,c/1200); }
@@ -432,13 +461,24 @@
       " Cent — etwa "+iv+". Erst darüber trennt das Ohr die beiden Töne wirklich.";
   }
 
-  /* Grundton auflösen. allowRandom=false für Frei hören und Sweep, damit dort
-     nicht bei jedem Klick eine andere Lage erklingt. */
-  function baseFreq(allowRandom){
+  var SEMINAMES={"-19":"d","-12":"a","-7":"d¹","0":"a¹","5":"d²","12":"a²"};
+
+  /* Grundton auflösen. advance=true nur bei einer neuen Aufgabe — nur dann
+     rückt „reihum“ eine Lage weiter. */
+  function baseFreq(advance){
     var v=baseEl.value;
     if(v==="custom") return Math.min(4000,Math.max(60,parseFloat(customHz.value)||440));
-    if(v==="rand")   return allowRandom ? fromSemi(SEMIS[Math.floor(Math.random()*SEMIS.length)]) : fromSemi(0);
+    if(v==="rand")   return advance ? fromSemi(SEMIS[Math.floor(Math.random()*SEMIS.length)]) : fromSemi(0);
+    if(v==="cycle"){
+      if(advance) cycleIdx=(cycleIdx+1)%SEMIS.length;
+      return fromSemi(SEMIS[Math.max(0,cycleIdx)]);
+    }
     return fromSemi(parseFloat(v));
+  }
+  function semiOf(f){                    // nächstgelegene Lage zu einer Frequenz
+    var best=SEMIS[0], d=1e9;
+    SEMIS.forEach(function(s){ var x=Math.abs(fromSemi(s)-f); if(x<d){d=x;best=s;} });
+    return d<1 ? best : null;
   }
 
   /* ----- Aufgabe erzeugen ----- */
@@ -507,6 +547,17 @@
     return "";
   }
 
+  function renderTally(){
+    var el=document.getElementById("regTally"), parts=[];
+    SEMIS.forEach(function(s){
+      var r=perReg[s]; if(r&&r.n) parts.push(SEMINAMES[s]+" "+r.ok+"/"+r.n);
+    });
+    if(parts.length<2){ el.hidden=true; return; }
+    el.hidden=false;
+    el.textContent="Nach Lage: "+parts.join(" · ")+
+      " — Unterschiede zwischen den Lagen sind normal und sagen mehr über die Lage als über Ihr Gehör.";
+  }
+
   /* ----- Antwort ----- */
   function answer(val){
     if(!q||q.answered) return;
@@ -519,6 +570,14 @@
     document.getElementById("sRight").textContent=stats.right;
     document.getElementById("sTotal").textContent=stats.total;
     document.getElementById("sStreak").textContent=stats.streak;
+
+    /* Bilanz je Lage — zeigt, ob die Schwäche an der Lage hängt und nicht am Ohr */
+    var sem=semiOf(q.base);
+    if(sem!==null){
+      var r=perReg[sem]||(perReg[sem]={ok:0,n:0});
+      r.n++; if(ok) r.ok++;
+    }
+    renderTally();
 
     var shown = q.detuned ? q.cents : +centsEl.value;
     verdict.className="verdict "+(ok?"ok":"no");
@@ -608,6 +667,15 @@
       renderAnswers(); invalidate("Zum Starten anhören.");
     });
   });
+  document.querySelectorAll("[data-timbre]").forEach(function(b){
+    b.addEventListener("click",function(){
+      timbre=b.dataset.timbre;
+      document.querySelectorAll("[data-timbre]").forEach(function(x){
+        x.setAttribute("aria-pressed", x===b?"true":"false");
+      });
+      invalidate();
+    });
+  });
   document.querySelectorAll("[data-mode]").forEach(function(b){
     b.addEventListener("click",function(){ setMode(b.dataset.mode); });
   });
@@ -618,7 +686,7 @@
   playBtn.addEventListener("click",function(){ if(q) play(); else newQuestion(); });
   nextBtn.addEventListener("click",newQuestion);
   document.getElementById("reset").addEventListener("click",function(){
-    stats={right:0,total:0,streak:0,wrong:0};
+    stats={right:0,total:0,streak:0,wrong:0}; perReg={}; cycleIdx=-1; renderTally();
     document.getElementById("sRight").textContent="0";
     document.getElementById("sTotal").textContent="0";
     document.getElementById("sStreak").textContent="0";
