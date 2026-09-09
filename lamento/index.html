@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAMENTO — Booklet · Jakob Grimm</title>
+<meta name="description" content="LAMENTO — das Debütalbum von Jakob Grimm mit Irén Seleljo. Digitales Booklet: Tracklist, Liner Notes, Credits.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://jakob-grimm.de/lamento/">
+<meta property="og:title" content="LAMENTO — Jakob Grimm">
+<meta property="og:description" content="LAMENTO — das Debütalbum von Jakob Grimm mit Irén Seleljo. Digitales Booklet.">
+<meta property="og:image" content="https://jakob-grimm.de/Bilder/startseite-cover-lamento.jpg">
+<meta property="og:image:width" content="2000">
+<meta property="og:image:height" content="2000">
+<meta property="og:url" content="https://jakob-grimm.de/lamento/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  @font-face{font-family:'DM Sans';font-style:normal;font-weight:300 500;font-display:swap;
+    src:url('../fonts/dm-sans-normal-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+  @font-face{font-family:'DM Sans';font-style:normal;font-weight:300 500;font-display:swap;
+    src:url('../fonts/dm-sans-normal-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+  @font-face{font-family:'DM Sans';font-style:italic;font-weight:300;font-display:swap;
+    src:url('../fonts/dm-sans-italic-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+  @font-face{font-family:'DM Sans';font-style:italic;font-weight:300;font-display:swap;
+    src:url('../fonts/dm-sans-italic-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+  :root{
+    --paper:#f5f2ed; --ink:#111; --line:#d8d4cc; --muted:#999; --faint:#bbb;
+    --hover:#ede9e3; --tile:#e2ddd6; --dark:#111; --white:#fdfcfa;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;}
+  img{display:block;max-width:100%;}
+  a{color:inherit;}
+
+  .nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+    padding:0 2rem;height:54px;background:rgba(245,242,237,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .logo{font-size:13px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;text-decoration:none;}
+
+  /* --- Booklet page rhythm --- */
+  .page{padding:5rem 2rem;border-top:1px solid var(--line);}
+  .page:first-of-type{border-top:none;}
+  .page--white{background:var(--white);}
+  .page--wide{padding-top:6rem;padding-bottom:6rem;}
+  .page-inner{max-width:780px;margin:0 auto;}
+
+  /* 1 — Titel: LAMENTO */
+  .titlepage{text-align:center;}
+  .titlepage .albumtitle{font-size:clamp(52px,13vw,104px);font-weight:300;letter-spacing:.06em;line-height:1;margin:0 0 1.6rem;}
+  .titlepage .artist{font-size:26px;font-weight:300;letter-spacing:.05em;}
+  .titlepage .withrow{font-size:14px;color:#555;letter-spacing:.04em;margin-top:.5rem;}
+  .titlepage .labelline{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:1.6rem;}
+  .titlepage .quote{max-width:720px;margin:0 auto;}
+  .titlepage .quote blockquote{font-size:18px;font-weight:300;font-style:italic;color:#333;line-height:1.65;}
+  .titlepage .quote cite{display:block;margin-top:1rem;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-style:normal;}
+
+  /* 2 — Cover */
+  .cover-page{padding:4rem 2rem 5rem;text-align:center;border-top:1px solid var(--line);}
+  .cover-page img{width:100%;max-width:560px;aspect-ratio:1/1;object-fit:cover;margin:0 auto;border:1px solid var(--line);}
+
+  /* 3 — Tracklist */
+  .section-label{text-align:center;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:2.5rem;}
+  .tracks{max-width:560px;margin:0 auto;display:flex;flex-direction:column;}
+  .composer{font-size:10px;font-weight:500;letter-spacing:0.13em;text-transform:uppercase;margin-top:1.5rem;margin-bottom:.5rem;}
+  .composer:first-child{margin-top:0;}
+  .composer-work{font-size:12.5px;font-weight:400;letter-spacing:normal;text-transform:none;color:#555;margin-top:-.3rem;margin-bottom:.5rem;}
+  .track{display:flex;align-items:baseline;gap:.8rem;padding:2px 0;}
+  .track .n{font-size:11px;color:var(--faint);min-width:18px;}
+  .track .t{font-size:12.5px;color:#555;flex:1;}
+  .track .t.it{font-style:italic;}
+  .track-time{display:inline-block;width:48px;flex-shrink:0;text-align:right;font-size:11px;color:var(--faint);font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;}
+
+  .lineup{max-width:560px;margin:2.5rem auto 0;padding-top:1.5rem;border-top:1px solid var(--line);font-size:12.5px;color:#555;line-height:1.9;}
+  .lineup div{display:grid;grid-template-columns:150px 1fr;gap:.5rem;}
+  .lineup strong{font-weight:500;color:#333;}
+
+  .player-intro{max-width:560px;margin:3.5rem auto 1rem;text-align:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .player-wrap{max-width:720px;margin:0 auto;}
+  .player-wrap iframe{display:block;width:100%;}
+
+  /* 4-6 — Liner notes */
+  .liner p{font-size:14.5px;color:#333;line-height:1.85;margin-bottom:1.2rem;text-align:justify;-webkit-hyphens:auto;hyphens:auto;}
+  .liner p:last-child{margin-bottom:0;}
+
+  /* 7 — Motto */
+  .motto{padding-top:7rem;padding-bottom:7rem;}
+  .motto-inner{max-width:720px;margin:0 auto;}
+  .motto p{font-size:17px;font-style:italic;font-weight:300;color:#3a3a3a;line-height:1.85;text-align:justify;-webkit-hyphens:auto;hyphens:auto;}
+  .motto .source{margin-top:2.5rem;font-size:11px;font-style:normal;color:var(--muted);line-height:1.7;letter-spacing:.02em;}
+  .motto .source em{font-style:italic;}
+  .motto-switch{margin-top:1.5rem;display:flex;gap:.6em;align-items:center;font-size:11px;letter-spacing:.09em;text-transform:uppercase;}
+  .motto-switch .lang-btn{background:none;border:none;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--muted);cursor:pointer;transition:color .15s;}
+  .motto-switch .lang-btn:hover{color:var(--ink);}
+  .motto-switch .lang-btn.active{color:#555;font-weight:600;cursor:default;}
+  .motto-switch .sep{color:var(--faint);}
+
+  /* 8 — Biografien */
+  .bios{max-width:920px;margin:0 auto;}
+  .bios-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+  .bio h2{font-size:15px;font-weight:500;letter-spacing:.02em;margin-bottom:.15em;}
+  .bio .role{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.9rem;}
+  .bio p:not(.role){font-size:13.5px;color:#333;line-height:1.75;text-align:justify;-webkit-hyphens:auto;hyphens:auto;}
+
+  /* 9 — Credits */
+  .credits-block{max-width:680px;margin:0 auto;font-size:12.5px;color:#555;line-height:1.75;}
+  .credits-block .row{display:grid;grid-template-columns:1fr;gap:.15rem;margin-bottom:1rem;}
+  .credits-block .row strong{font-weight:500;color:#333;}
+  .credits-sub{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--line);}
+  .credits-sub .credits-heading{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
+  .works div{display:grid;grid-template-columns:180px 1fr;gap:.5rem;margin-bottom:.5rem;font-size:12px;}
+  .works strong{font-weight:500;color:#333;}
+  .credits-foot{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--line);font-size:10.5px;letter-spacing:.04em;color:var(--muted);line-height:1.9;}
+
+  /* 11 — Booklet-Fotos */
+  .gallery{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+  .gallery img{width:100%;aspect-ratio:1/1;object-fit:cover;border:1px solid var(--line);}
+
+  /* 12 — Rückseite */
+  .backcover{padding-top:9rem;padding-bottom:9rem;text-align:center;}
+  .backcover .bc-label{font-size:15px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:#333;}
+  .backcover .bc-url{margin-top:1rem;font-size:12px;letter-spacing:.1em;color:var(--muted);}
+  .backcover .bc-url a{text-decoration:none;}
+  .backcover .bc-url a:hover{color:var(--ink);}
+
+  .press-privacy{padding:1rem 2rem;border-top:1px solid var(--line);font-size:10.5px;color:var(--faint);line-height:1.7;text-align:center;}
+
+  .footer{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);}
+  .footer-l{padding:1.4rem 2rem;border-right:1px solid var(--line);font-size:11px;color:var(--muted);}
+  .footer-r{padding:1.4rem 2rem;display:flex;gap:1.75rem;justify-content:flex-end;flex-wrap:wrap;}
+  .footer-r a{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#888;text-decoration:none;transition:color .15s;}
+  .footer-r a:hover{color:var(--ink);}
+
+  @media(max-width:760px){
+    .nav{padding:0 1.25rem;}
+    .page{padding:3.5rem 1.25rem;}
+    .page--wide{padding-top:4rem;padding-bottom:4rem;}
+    .cover-page{padding:2.5rem 1.25rem 3.5rem;}
+    .titlepage .albumtitle{margin:0 0 1.2rem;}
+    .titlepage .labelline{margin-top:1.2rem;}
+    .titlepage .quote blockquote{font-size:16px;}
+    .lineup div{grid-template-columns:120px 1fr;}
+    .motto{padding-top:4rem;padding-bottom:4rem;}
+    .motto p{font-size:15px;}
+    .bios-grid{grid-template-columns:1fr;gap:2.25rem;}
+    .works div{grid-template-columns:1fr;gap:.05rem;margin-bottom:.7rem;}
+    .gallery{grid-template-columns:1fr;gap:1rem;}
+    .backcover{padding-top:5.5rem;padding-bottom:5.5rem;}
+    .footer{grid-template-columns:1fr;}
+    .footer-l{border-right:none;border-bottom:1px solid var(--line);}
+    .footer-r{justify-content:flex-start;}
+  }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="logo" href="../index.html">Jakob Grimm</a>
+</nav>
+
+<!-- 1 — TITEL: LAMENTO -->
+<section class="page page--white page--wide">
+  <div class="titlepage">
+    <div class="albumtitle">LAMENTO</div>
+    <div class="artist">Jakob Grimm</div>
+    <div class="withrow">mit Irén Seleljo</div>
+    <div class="labelline">simoc records · SIMOCLP01</div>
+  </div>
+</section>
+
+<!-- 2 — COVER -->
+<section class="cover-page">
+  <img src="../Bilder/startseite-cover-lamento.jpg" alt="Album-Cover LAMENTO">
+</section>
+
+<!-- 3 — ZITAT -->
+<section class="page page--white page--wide">
+  <div class="titlepage">
+    <div class="quote">
+      <blockquote>„Wenn ich spiele, interessiert mich in erster Linie der Klang. Bei der Posaune ist er ein Schmelztiegel: die Rhetorik der Renaissance, das Runde, Dunkle der Romantik — und das Ergebnis lebt im Hier und Jetzt."</blockquote>
+      <cite>Jakob Grimm</cite>
+    </div>
+  </div>
+</section>
+
+<!-- 4 — TRACKLIST -->
+<section class="page page--wide">
+  <div class="section-label">Tracklist</div>
+  <div class="tracks">
+    <div class="composer">Manuel Zwerger</div>
+    <div class="track"><span class="n">1</span><span class="t">LAMENTO</span><span class="track-time">02:56</span></div>
+    <div class="composer">Alfred Desenclos</div>
+    <div class="track"><span class="n">2</span><span class="t">Plain-Chant et Allegretto</span><span class="track-time">08:44</span></div>
+    <div class="composer">György Kurtág</div>
+    <div class="composer-work">Hat darab harsonára és zongorára</div>
+    <div class="track"><span class="n">3</span><span class="t it">Fanfár I</span><span class="track-time">00:50</span></div>
+    <div class="track"><span class="n">4</span><span class="t it">Sirató I</span><span class="track-time">00:58</span></div>
+    <div class="track"><span class="n">5</span><span class="t it">Verés I</span><span class="track-time">01:26</span></div>
+    <div class="track"><span class="n">6</span><span class="t it">Sirató II</span><span class="track-time">02:00</span></div>
+    <div class="track"><span class="n">7</span><span class="t it">Fanfár II</span><span class="track-time">00:55</span></div>
+    <div class="track"><span class="n">8</span><span class="t it">Hommage à Paganini</span><span class="track-time">00:21</span></div>
+    <div class="composer">Biagio Putignano</div>
+    <div class="track"><span class="n">9</span><span class="t">Hamlet's Mill</span><span class="track-time">06:03</span></div>
+    <div class="composer">René Leibowitz</div>
+    <div class="composer-work">Quatre Bagatelles pour trombone et piano, op. 61</div>
+    <div class="track"><span class="n">10</span><span class="t it">I. Lamentation</span><span class="track-time">01:17</span></div>
+    <div class="track"><span class="n">11</span><span class="t it">II. Marche Funèbre</span><span class="track-time">00:37</span></div>
+    <div class="track"><span class="n">12</span><span class="t it">III. Ostinato</span><span class="track-time">00:22</span></div>
+    <div class="track"><span class="n">13</span><span class="t it">IV. Chant sans Paroles</span><span class="track-time">00:57</span></div>
+  </div>
+
+  <div class="lineup">
+    <div><strong>Jakob Grimm</strong><span>Posaune</span></div>
+    <div><strong>Irén Seleljo</strong><span>Klavier, Track 2 sowie 3–8 und 10–13</span></div>
+  </div>
+
+  <div class="player-intro">Digitale Ausgabe — alle Tracks zum Anhören</div>
+  <div class="player-wrap">
+    <iframe src="https://samply.app/embed/v95Va1uGYQB9nvqbRGh2?si=TRivUrQxwjNI9WUqhHJ13DhyJj93" frameborder="0" allowtransparency="true" style="width:100%; min-height:650px; border-radius:0; border:1px solid #d8d4cc;"></iframe>
+  </div>
+</section>
+
+<!-- 5 — LINER NOTES I -->
+<section class="page page--white page--wide">
+  <div class="section-label">Liner Notes</div>
+  <div class="page-inner liner">
+    <p>Mit LAMENTO legt Jakob Grimm sein Debütalbum vor — ein Programm, das seinen Titel wie eine Frage trägt, nicht wie eine Antwort. Denn die Posaune kennt die Klage seit Jahrhunderten: Sie hat Tote begleitet, Apokalypsen angekündigt, in den Gassen von New Orleans geschrien und der Kirchenmusik der Renaissance mit einem Klang versehen, den man nur als den Atem der Vergänglichkeit beschreiben kann. Man weiß, wie das klingt. Was aus diesem Erbe werden kann, wenn man es ernst nimmt, ohne es zu wiederholen, wird auf diesem Album befragt.</p>
+    <p>LAMENTO entstand in enger Zusammenarbeit zwischen Manuel Zwerger und Jakob Grimm. Die Musiker erkundeten gemeinsam die Klangmöglichkeiten der Posaune, horchten in ihre Physik hinein, probierten aus. Zwerger setzt dabei das Glissando — die vertrauteste Geste der Posaune — im Titelstück als klingende Täuschung ein. Was dabei entstand, klingt wie ein elektronischer Effekt — glitchend, phasenverschoben, surreal — und bleibt doch rein akustisch: Zug und Lippe arbeiten gegeneinander, die Posaune klettert entlang der Naturtonreihe, jener uralten akustischen Leiter, die in jedem Blechton schlummert. Ein Lamento, das nicht klagt wie erwartet — sondern wie jemand, der die Sprache der Klage neu buchstabiert.</p>
+    <p>Plain-Chant et Allegretto — schon der Titel verrät eine Spannung. Alfred Désenclos nannte seine Musik selbst „romantisch" — und doch klingt das Stück nach jener schwebenden Modalität, die dem Gregorianischen Choral entstammt und französische Musik seit Jahrhunderten durchzieht. Nur dass er hier auf einem Instrument landet, das keine Worte kennt. Als würde man eine Melodie summen, deren Worte man vergessen hat. Am Klavier ist Irén Seleljo zu hören, mit der Grimm seit Jahren eine enge musikalische Partnerschaft verbindet.</p>
+  </div>
+</section>
+
+<!-- 6 — LINER NOTES II -->
+<section class="page page--wide">
+  <div class="page-inner liner">
+    <p>Sechs Stücke (Hat darab harsonára és zongorára), die allesamt auch in György Kurtágs Klavierzyklus Játékok existieren — jenem persönlichen Kosmos aus Miniaturen und Widmungen, den Kurtág seit 1973 wie ein Tagebuch weitergeschrieben hat. Die Übertragung auf die Posaune legt etwas frei, was bislang im Klaviersatz schlummerte: Die Fanfaren, die im Original den Zyklus einrahmen, sind eine ureigene Geste des Blechbläsers — auf der Posaune bekommen sie nun eine Selbstverständlichkeit, die überrascht. Dazwischen: Klage, Gewalt, Klage. Und dann, als unerwarteter Nachsatz, die Hommage à Paganini — ein rätselhaft freudiger Überschlag ins Virtuose, der wie ein böses Lächeln anmutet.</p>
+    <p>Der Mühlstein des Amlòði mahlte einst Frieden und Überfluss, dann Salz, dann Felsen und Sand — und erzeugt so den Maelstrom, den Strudel zur Unterwelt. Dieses Bild aus Il Mulino di Amleto stellt Biagio Putignano seinem Hamlet's Mill als Motto voran. Putignano schrieb das Stück für Jakob Grimm und entschied, die Posaune ohne Stimmzug spielen zu lassen. Eine kleine, folgenreiche Entscheidung: Der Ton wird kompakter, rauer — archaischer. Als hätte das Instrument sich an etwas Älteres, Roheres erinnert. Dass ausgerechnet dieser Klang den Maelstrom in Bewegung setzt, ist keine zufällige Besetzungsentscheidung.</p>
+  </div>
+</section>
+
+<!-- 7 — MOTTO -->
+<section class="page page--white motto">
+  <div class="motto-inner">
+    <p class="motto-text" data-lang="it">[...] Amlòði si distingueva per il possesso di un mulino favoloso dalla cui macina ai suoi tempi uscivano pace e abbondanza. Più tardi, in tempi di decadenza, il mulino macinò sale; ora, infine, essendo caduto in fondo al mare, macina le rocce e la sabbia creando un vasto gorgo, il Maelstrom («la corrente che macina», dal verbo mala «macinare»), ritenuto una delle vie che conducono alla terra dei morti. [...]</p>
+    <p class="motto-text" data-lang="de" hidden>[...] Amlòði zeichnete sich durch den Besitz einer sagenhaften Mühle aus, aus deren Mahlwerk zu seiner Zeit Frieden und Überfluss hervorgingen. Später, in Zeiten des Niedergangs, mahlte die Mühle nur noch Salz; jetzt schließlich, auf den Grund des Meeres gesunken, mahlt sie Felsen und Sand und erzeugt so einen gewaltigen Strudel, den Maelstrom («der mahlende Strom», vom Verb mala, «mahlen»), der als einer der Wege gilt, die ins Land der Toten führen. [...]</p>
+    <div class="motto-switch" role="group" aria-label="Sprache des Zitats">
+      <button type="button" class="lang-btn active" data-lang="it" onclick="setMottoLang('it')" aria-pressed="true">IT</button>
+      <span class="sep">·</span>
+      <button type="button" class="lang-btn" data-lang="de" onclick="setMottoLang('de')" aria-pressed="false">DE</button>
+    </div>
+    <div class="source">
+      Giorgio de Santillana e Hertha von Dechend<br>
+      <em>IL MULINO DI AMBLETO — saggio sul mito e sulla struttura del tempo</em><br>
+      Adelphi edizioni S.p.A., Milano 1983
+    </div>
+  </div>
+</section>
+
+<!-- 8 — LINER NOTES III -->
+<section class="page page--wide">
+  <div class="page-inner liner">
+    <p>Den Abschluss bilden René Leibowitz' Quatre Bagatelles op. 61 — Miniaturen eines Komponisten, der seine Musik so schrieb, wie er sein Leben lebte: im Geist des permanenten Widerspruchs. Schüler Ravels, Apostel Schönbergs, Lehrer Boulez' — und von seinen Zeitgenossen nie recht verstanden, weil er sich nicht einordnen ließ. Lamentation gegen Ostinato, Marche Funèbre gegen Chants sans Paroles — Gegensätze, die einander nicht aufheben, sondern befragen. Und unter ihrer strengen Oberfläche: ein Klang, der wärmer und sinnlicher ist, als man erwartet.</p>
+    <p>LAMENTO ist kein Manifest und kein Lehrgang. Es ist der Versuch, die Posaune als das zu hören, was sie im besten Fall ist: Ein Instrument, das sprechen kann, ohne erklären zu müssen.</p>
+  </div>
+</section>
+
+<!-- 9 — BIOGRAFIEN -->
+<section class="page page--white page--wide">
+  <div class="section-label">Biografien</div>
+  <div class="bios">
+    <div class="bios-grid">
+      <div class="bio">
+        <h2>Jakob Grimm</h2>
+        <p class="role">Posaune</p>
+        <p>Jakob Grimm versteht notierte und improvisierte Musik als zwei Wege zu einem Klang, der unmittelbar spricht. Seine Bassposaune ist ein Instrument der Tiefe, selten im Rampenlicht und genau deshalb voller unentdeckter Möglichkeiten. In enger Zusammenarbeit mit Komponisten wie Manuel Zwerger, Biagio Putignano und Mike Svoboda entstehen neue Werke für sein Instrument; Konzerte führen ihn unter anderem in die Wigmore Hall London, die Philharmonie Berlin und nach Grafenegg. Mit dem Quartett Tetra Brass verfolgt er eine eigene Klangsprache zwischen wiederentdeckter Literatur und eigens für das Ensemble geschriebener Musik; im Musiktheater führen ihn Produktionen an die Bayerische Staatsoper und zur Münchener Biennale. Er studierte in München, Wien, Amsterdam und Basel und unterrichtet Posaune und Kammermusik an der Berufsfachschule für Musik in Dinkelsbühl.</p>
+      </div>
+      <div class="bio">
+        <h2>Irén Seleljo</h2>
+        <p class="role">Klavier</p>
+        <p>Irén Seleljo studierte an der Franz-Liszt-Musikakademie Budapest sowie an der Konservatorium Wien Privatuniversität. Ein Stipendium führte sie ans Bard College in die USA, wo sie bei Jeremy Denk studierte. Ihr künstlerischer Schwerpunkt liegt in der Kammermusik, mit besonderem Interesse an der Musik der Gegenwart. Sie konzertierte u. a. in Österreich, Ungarn, Frankreich, Rumänien, Spanien, Italien und Chile. Sie unterrichtet als Universitätsprofessorin an der Musik und Kunst Privatuniversität der Stadt Wien und an der Kunstuniversität Graz.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 — CREDITS -->
+<section class="page page--wide">
+  <div class="section-label">Credits</div>
+  <div class="credits-block">
+    <div class="row">
+      <span>Aufgenommen im Großen Konzertsaal der Hochschule für Musik und Theater München</span>
+    </div>
+    <div class="row">
+      <strong>Tracks 2–8 und 10–13</strong>
+      <span>31. Juli und 1. August 2025 · Aufnahme David Merkl</span>
+    </div>
+    <div class="row">
+      <strong>Tracks 1 und 9</strong>
+      <span>12. April 2026 · Aufnahme Sebastian Kienel</span>
+    </div>
+    <div class="row">
+      <strong>Mix &amp; Mastering</strong>
+      <span>David Merkl | msm-studios</span>
+    </div>
+    <div class="row">
+      <strong>Produktion</strong>
+      <span>Christian Traute, Jakob Grimm, David Merkl</span>
+    </div>
+    <div class="row">
+      <strong>Artwork</strong>
+      <span>Rodrigo Luna Stix</span>
+    </div>
+
+    <div class="credits-sub works">
+      <div class="credits-heading">Werkangaben</div>
+      <div><strong>Manuel Zwerger</strong><span>Edition Gravis</span></div>
+      <div><strong>Alfred Désenclos</strong><span>Alphonse Leduc, Paris 1965 (Plate A.L. 23,615)</span></div>
+      <div><strong>György Kurtág</strong><span>© 1999 Editio Musica Budapest, printed in Hungary</span></div>
+      <div><strong>Biagio Putignano</strong><span>Edition Gravis</span></div>
+      <div><strong>René Leibowitz</strong><span>Manuskript</span></div>
+    </div>
+
+    <div class="credits-foot">
+      GTIN 4068992716459<br>
+      © &amp; ℗ 2026 simoc records
+    </div>
+  </div>
+</section>
+
+<!-- 11 — BOOKLET-FOTOS -->
+<section class="page page--wide">
+  <div class="gallery">
+    <img src="../Bilder/lamentobooklet-1.jpg" alt="LAMENTO Booklet, Ansicht 1">
+    <img src="../Bilder/lamentobooklet-2.jpg" alt="LAMENTO Booklet, Ansicht 2">
+    <img src="../Bilder/lamentobooklet-3.jpg" alt="LAMENTO Booklet, Ansicht 3">
+  </div>
+</section>
+
+<!-- 12 — RÜCKSEITE -->
+<section class="page page--white backcover">
+  <div class="bc-label">simoc records</div>
+  <div class="bc-url"><a href="../index.html">jakob-grimm.de</a></div>
+</section>
+
+<div class="press-privacy">Der eingebettete Audio-Player wird von Samply (samply.app) bereitgestellt. Beim Abspielen werden Daten an den Anbieter übertragen.</div>
+
+<div class="footer">
+  <div class="footer-l">© 2026 Jakob Grimm</div>
+  <div class="footer-r">
+    <a href="mailto:info@jakob-grimm.de">E-Mail</a>
+    <a href="https://www.instagram.com/grimmig92/" target="_blank" rel="noopener">Instagram</a>
+    <a href="../impressum.html">Impressum</a>
+    <a href="../datenschutz.html">Datenschutz</a>
+  </div>
+</div>
+<script>
+function setMottoLang(lang){
+  document.querySelectorAll('.motto-text').forEach(function(el){
+    el.hidden = el.getAttribute('data-lang') !== lang;
+  });
+  document.querySelectorAll('.motto-switch .lang-btn').forEach(function(btn){
+    var active = btn.getAttribute('data-lang') === lang;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+}
+</script>
+</body>
+</html>
