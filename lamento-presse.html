@@ -75,6 +75,9 @@
 
   .album-player{padding:0 2.5rem 2.25rem;}
   .album-player iframe{display:block;width:100%;}
+  .player-fallback{max-width:720px;margin:.9rem auto 0;text-align:center;font-size:10.5px;color:var(--faint);}
+  .player-fallback a{color:var(--muted);text-decoration:underline;text-underline-offset:2px;}
+  .player-fallback a:hover{color:var(--ink);}
 
   .performers{padding:.5rem 2.5rem 3.5rem;max-width:920px;margin:0 auto;}
   .performers-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
@@ -150,6 +153,7 @@
 
 <div class="album-player">
   <iframe src="https://samply.app/embed/v95Va1uGYQB9nvqbRGh2" frameborder="0" allowtransparency="true" style="width:100%; min-height:650px; border-radius:0; border:1px solid #d8d4cc;"></iframe>
+  <div class="player-fallback">Player lädt nicht? <a href="https://samply.app/p/v95Va1uGYQB9nvqbRGh2?si=TRivUrQxwjNI9WUqhHJ13DhyJj93" target="_blank" rel="noopener">Direktlink zu den Tracks auf Samply ↗</a></div>
 </div>
 
 <div class="performers">
